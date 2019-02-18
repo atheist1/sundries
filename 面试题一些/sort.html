@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>排序</title>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+    }
+    .container {
+      display: flex;
+      align-items: flex-end;
+      justify-content: space-between;
+    }
+    .cylinder {
+      display: flex;
+      position: relative;
+      width: 40px;
+      height: 90px;
+      background-color: #ddd;
+      justify-content: space-between;
+      flex-direction: column;
+      align-items: center;
+      transition: all 1s linear;
+    }
+    .cylinder::before,.cylinder::after {
+      content: '';
+      display: block;
+      border-radius: 100%;
+      height: 20px;
+      width: 100%;
+      background: #333;
+    }
+    .cylinder::before{
+      transform:translateY(-5px)
+    }
+    .cylinder::after {
+      transform:translateY(5px)
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+  </div>
+</body>
+<script src="./sort.js"></script>
+</html>
