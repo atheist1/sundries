@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>myVue</title>
+  
+</head>
+<body>
+  <div id="app">
+    <div>
+      <label for="b">我是对象b的输入框，我是双向数据绑定</label>
+      <input type="text" value="aaa" v-model ="b" id="b" v-bind:url="url">
+      <div class="box">{{b}}</div>
+    </div>
+    <div>
+      <label for="a">我是对象a的输入框，我是双向数据绑定</label>
+      <input type="text" value="aaa" v-model ="a.b" id="a">
+      <div class="box1">{{a.b}}</div>
+    </div>
+    <div>
+        我是C<div class="box3">{{c}}</div>
+    </div>
+    <div>
+        我是D<div class="box3">{{d}}</div>
+    </div>
+  </div>
+  <script src="./myVue.js"></script>
+  <script>
+    /**test */
+    let app = document.getElementById('app')
+    let vue = new Vue({
+      data: {
+        a: {
+          b:[1,2]
+        },
+        b:3
+      },
+      el: app,
+      computed: {
+        c () {
+          let a = 0
+          
+          return this.a.b
+        },
+        d: {
+          get : function d() {
+            return this.a.b
+          },
+          set (v) {
+            this.a = v
+          }
+        }
+      },
+      watch: {
+        b: {
+          handler: function (old, newVal) {
+            this.a.b = 5
+          }
+        }
+      }
+    })
+    console.log(vue)
+  </script>
+</body>
+</html>
