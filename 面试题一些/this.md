@@ -72,3 +72,56 @@ foo( 2 ); // 2
 
 词法this这个特性看起来比较拗口，但实际上是很简单的。他就像变量的词法作用域一样，仅仅在定义的时候绑定this指向，在之后再也不能改变他的指向(包括call和bind)
 ##### 例1变式
+```
+// 以下的输出this会是window对象
+// 原因是在定义箭头函数里的this时会去找上层作用域的指向
+// 上层作用域是fn的函数作用域，当前的fn函数作用域在往上找就找到了宿主对象
+window.name = 'window'
+var fn = function() {
+  var obj = {
+    name: 'obj',
+    sayName: () => {
+      console.log(this) // 指向window
+      console.log(this.name)
+    }
+  }
+  obj.sayName()
+}
+fn()
+
+```
+##### 例2变式
+```
+// 与例题2不同的是，箭头函数的this指向并不会改变了
+// 当定义函数的时候，当前的this指向的就是sayName的函数，sayName的函数当前this指向是obj
+// 所以最终timeout出来就是obj
+window.name = 'window'
+var fn = function() {
+  var obj = {
+    name: 'obj',
+    sayName: function() {
+      setTimeout(() => { console.log(this) }) // obj
+    }
+  }
+  obj.sayName()
+}
+fn()
+```
+##### 例3变式
+```
+// 例3的变式就简单明了了，dbl里面this永远指向window，没有办法改变
+window.val = 2
+var obj = {
+    val: 2,
+    dbl: () => {
+      this.val *= 2
+      val *= 2
+      console.log(val)
+      console.log(this.val)
+    }
+  }
+  // 8 8
+obj.dbl()
+var dbl = obj.dbl
+dbl() // 8 8
+```
