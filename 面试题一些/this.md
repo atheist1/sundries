@@ -37,3 +37,38 @@ fn()
   等待当前任务队列结束，下一次任务队列执行的时候上下文环境已经改成了宿主对象
 */
 ```
+##### 例3
+```
+window.val = 2
+var obj = {
+    val: 2,
+    dbl: function() {
+      this.val *= 2
+      val *= 2
+      console.log(val)
+      console.log(this.val)
+    }
+  }
+  // 4 4
+  // obj.dbl() 
+// 当前的val和this.val都是window下的
+var dbl = obj.dbl
+// dbl虽然调用的是obj.dbl，但是调用的时候没有前缀，所以实际上还是宿主对象
+dbl() // 8 8
+```
+### es6
+es6出现了箭头函数，他看起来像这样
+```
+var foo = a => {
+	console.log( a );
+};
+
+foo( 2 ); // 2
+```
+箭头是繁琐的function的一个缩写,
+但是箭头函数有几个比较有意思的特性
+1. 没有arguments参数
+2. this指向改成词法this特性
+
+词法this这个特性看起来比较拗口，但实际上是很简单的。他就像变量的词法作用域一样，仅仅在定义的时候绑定this指向，在之后再也不能改变他的指向(包括call和bind)
+##### 例1变式
