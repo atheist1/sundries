@@ -41,4 +41,64 @@ function a() {
 }
 a()
 ```
-观察以上代码我们考虑采用什么规则呢？左看看右看看发现调用a时并没有
+观察以上代码我们考虑采用什么规则呢？左看看右看看发现调用a时是一个直白的简单的毫无修饰的调用，所以这里适用默认绑定。
+##### 隐式绑定(implict binding)
+隐式绑定的规则很容易理解，到达调用点的时候，我们观察有没有环境对象（context object）或者说容器，或拥有者存在，如果存在，则把this绑定到其上
+```
+var fn = function () {
+    console.log(this)
+}
+var obj = {
+    say: fn
+}
+
+obj.say()
+// 调用栈 fn -> say
+// 调用点 obj.say 
+```
+如上所示，当到达调用点时发现函数存在环境对象obj,这时候将obj绑定为this
+##### 隐式丢失(implictly lost)
+隐式调用存在着隐式丢失的问题，当隐式丢失的时候将回退至默认绑定
+```
+function foo() {
+	console.log( this.a );
+}
+var obj = {
+	a: 2,
+	foo: foo
+};
+var bar = obj.foo; // 函数引用！
+bar() // 调用点
+// 看似我们使用的是obj去调用的foo方法
+// 但实际上我们观察调用点是一个光秃秃的调用，调用的是obj.foo的引用
+// 最终本应该是隐式绑定的回退到了默认绑定
+```
+##### 明确绑定(Explicit binding)
+看了隐式调用，你会发现当你想给函数内部显式绑定某个对象this时只能傻乎乎的把让目标对象包含这个函数的引用。这时候明确绑定就站出来了。  
+js引擎提供了两种明确绑定的方式，一个是apply另一个是call，这两个实际上差别不大，关于call与apply的差异与实现方式我将会在另一篇文章解析，这里不做多介绍。  
+```
+function foo() {
+	console.log( this.a );
+}
+var obj = {
+	a: 2
+};
+foo.call( obj ); // 2
+// 将foo的this绑定为obj的
+```
+##### 硬绑定(hard binding)
+明确绑定有时候也不能解决绑定丢失的问题，这时候我们发现了另一种方式，让我们锁住我们的的this，那就是硬绑定。  
+观察以下代码
+```
+var name = 'window'
+var fn = function () {
+    console.log(this.name)
+}
+var obj = {
+    name: 'obj'
+}
+var calls = function() {
+    fn.call(obj)
+}
+calls() // calls使用硬绑定把fn的this永远指向了obj
+```
