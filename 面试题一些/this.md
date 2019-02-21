@@ -125,3 +125,24 @@ obj.dbl()
 var dbl = obj.dbl
 dbl() // 8 8
 ```
+##### 终极问题
+```
+// 第一个console很简单，普通函数那里调用指向那里
+// 第二个console也是同样的道理，哪里调用指向哪里
+// 第三个this是箭头函数的this，他只能从父级上寻找，父级是f1函数。继承了fn1的this
+// 所以调用f1时的this是window所以箭头函数里面也是window
+var obj = {
+  say: function() {
+    console.log(this) // obj
+    var f1 = function() {
+      console.log(this)
+      var a = () => {
+        console.log(this); // window
+      }
+      a()
+    };
+    f1();
+  }
+}
+obj.say()
+```
