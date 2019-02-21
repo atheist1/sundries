@@ -101,4 +101,43 @@ var calls = function() {
     fn.call(obj)
 }
 calls() // calls使用硬绑定把fn的this永远指向了obj
+// 什么，你不信？那我们看看
+calls.call({name:'i dont know'})
+calls.call(window)
 ```
+---
+```
+// 来一个带参数的方法
+var fn = function (b) {
+    console.log(this.a + b)
+}
+var obj = {
+  a:4
+}
+var calls = function () {
+  fn.apply(obj, arguments)
+}
+calls(5)
+```
+上述就是一个简单的硬性绑定的方式，但是这样的方式过于呆板，不灵活，让我们想想更好的方法吧!
+```
+function myBind(fn,obj) {
+  return function () {
+    return fn.apply(obj, arguments)
+  }
+}
+var obj2 = {
+  a: 18
+}
+var myFn = myBind(fn,obj2)
+myFn(5)
+// 这里我们构建了一个灵活的硬性绑定，同样的js内置对象Function也提供了这样一个bind方法，但是实现方法更加复杂
+```
+##### new绑定
+new绑定是我们介绍的最后一种规则  
+当函数前带上new运算符时将会进行以下几步
+1. 建立一个空对象
+2. 将构造函数的原型与空对象绑定
+3. 将构造函数的this指向空对象并执行
+4. 如果构造函数执行结果是一个对象则返回执行结果，不然返回这个空对象  
+最终返回对象的this即被绑定了，这里存在一个如何实现一个new的面试题我将另取文章详细介绍。
