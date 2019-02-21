@@ -221,3 +221,44 @@ c(3)
 除此之外，还有一个使用较广的特例，那就是es6的箭头函数，可以说箭头函数并不适用以上四种规则。
 ### 软化绑定
 上面有硬绑定强制绑定了我们的this值，虽然这样让this指向不至于回退到默认绑定，但是会导致使用起来非常不灵敏，甚至不能用call apply改变指向。我们就想出了另一种方式实现，那就是软化绑定，软化绑定概念很明确，检查当前的this，如果是默认绑定，即全局对象或者undefined的时候将会使用最初默认绑定的对象作为this。
+```
+if (!Function.prototype.softBind) {
+	Function.prototype.softBind = function(obj) {
+		var fn = this,
+			curried = [].slice.call( arguments, 1 ),
+			bound = function bound() {
+				return fn.apply(
+					(!this ||
+						(typeof window !== "undefined" &&
+							this === window) ||
+						(typeof global !== "undefined" &&
+							this === global)
+					) ? obj : this,
+					curried.concat.apply( curried, arguments )
+				);
+			};
+		bound.prototype = Object.create( fn.prototype );
+		return bound;
+	};
+}
+```
+```
+function foo() {
+   console.log("name: " + this.name);
+}
+
+var obj = { name: "obj" },
+    obj2 = { name: "obj2" },
+    obj3 = { name: "obj3" };
+
+var fooOBJ = foo.softBind( obj );
+
+fooOBJ(); // name: obj
+
+obj2.foo = foo.softBind(obj);
+obj2.foo(); // name: obj2   <---- 看!!!
+
+fooOBJ.call( obj3 ); // name: obj3   <---- 看!
+
+setTimeout( obj2.foo, 10 ); // name: obj   <---- 退回到软绑定
+```
