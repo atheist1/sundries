@@ -48,4 +48,15 @@ console.log(flatten([1, [2],
   [
     [3], 4
   ], 5
-])); // [1,2,3,4,5])flatten
+]));
+
+// 来一个new的精简写法
+// 第一步创建一个对象
+// 把对象原型绑定到构造函数的原型
+// 改变对象的this指向
+// 如果构造函数返回的是对象则返回这个对象，不然就返回新创建对象
+var __new = function(fn, ...args) {
+  var obj = Object.create(fn.prototype)
+  const ret = fn.apply(obj, args)
+  return ret instanceof Object ? ret : obj
+}
