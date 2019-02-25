@@ -72,31 +72,26 @@ class Animal {
   sayName() {
     console.log(this.name)
   }
-<<<<<<< HEAD
   ping() {
     console.log(this.name + 'a')
   }
-=======
->>>>>>> fd8bb4f269a6844c5dfe461af956ece4e78ea518
 }
 class Cat extends Animal {
   // 这里如果不写constructor会默认生成一个constructor并默认调用super
   constructor(name) {
     // super的实际作用是生成了一个父级的this 然后把父级方法添加在子类this上
     super(name)
-<<<<<<< HEAD
+      // super相当于
+      // Animal.prototype.constructor.call(this)
       // super还能这样用
       // 直接调用父类方法，但是里面的this指向的是子类
     super.ping()
-=======
->>>>>>> fd8bb4f269a6844c5dfe461af956ece4e78ea518
   }
   sayName() {
     console.log(this.name + 'miao')
   }
 }
 let cat = new Cat('miaomiao')
-<<<<<<< HEAD
   // es5 es6继承的区别
   // es5的继承如同上述代码所示，先实现了子类的创建，然后把父类方法
   // 通过prototype绑定到字类上
@@ -104,6 +99,3 @@ let cat = new Cat('miaomiao')
   // es6的super是先创建了父类的this，然后把为this添加属性
   // 但是es6的class中子类是没有this的，他实际上是继承了父类的this
   // 如果你想使用子类的this，在子类构造函数返回一个对象。
-=======
-  // es5 es6继承的区别
->>>>>>> fd8bb4f269a6844c5dfe461af956ece4e78ea518
