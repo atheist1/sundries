@@ -49,10 +49,6 @@ let BFSdeepClone = (obj) => {
         _obj = copy.shift()
       visitedQueue.push(items)
       visitedCopyQueue.push(_obj)
-        // c: {
-        // a: 1,
-        // b: 2
-        //}
       if (isTypeOf(items, 'object') || isTypeOf(items, 'array')) {
         for (let item in items) {
           let val = items[item]
