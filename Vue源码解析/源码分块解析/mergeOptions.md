@@ -77,7 +77,7 @@ function normalizeProps (options, vm) {
 ```
 二. normalizeInject  
 ``normalizeInject``与上述类似，也是分为对象和数组两个部分进行平整  
-也就是将['a','b'] 或者别名a``{ a: 'foo'}``转换成  ``{from: 'a'}``的形式
+也就是将['a','b'] 或者别名a``{ a: 'foo'}``转换成  ``{from: 'a'}``的形式  
 三. normalizeDirectives  
 ``normalizeDirectives``主要是为了处理文档所说的这种情况[(bind 和 update 时触发相同行为)](https://cn.vuejs.org/v2/guide/custom-directive.html)，对options上的directive进行了函数的绑定
 
@@ -114,4 +114,55 @@ var defaultStrat = function (parentVal, childVal) {
     : childVal
 };
 ```
-
+2. data
+合并data采用的是`mergeDataOrFn`函数
+``` javascript
+function mergeDataOrFn (parentVal,childVal,vm) { // 只有在new一个vue实例的时候才会存在vm属性
+  if (!vm) {
+    // in a Vue.extend merge, both should be functions
+    // 省略步骤1 不存在父级直接返回子级，不存在子级直接返回父级对象
+    // 这里不需要判断两个值是不是function类型，因为不是function类型上一步调用就已经把他排除了
+    return function mergedDataFn () {
+      return mergeData(
+        typeof childVal === 'function' ? childVal.call(this, this) : childVal,
+        typeof parentVal === 'function' ? parentVal.call(this, this) : parentVal
+      )
+    }
+  } else {
+    return function mergedInstanceDataFn () {
+      // instance merge
+      var instanceData = typeof childVal === 'function'
+        ? childVal.call(vm, vm)
+        : childVal;
+      var defaultData = typeof parentVal === 'function'
+        ? parentVal.call(vm, vm)
+        : parentVal;
+      if (instanceData) {
+        return mergeData(instanceData, defaultData)
+      } else {
+        return defaultData
+      }
+    }
+  }
+}
+```
+mergeData函数
+```javascript
+function mergeData (to, from) {
+  if (!from) { return to }
+  var key, toVal, fromVal;
+  var keys = Object.keys(from);
+  for (var i = 0; i < keys.length; i++) {
+    key = keys[i];
+    toVal = to[key];
+    fromVal = from[key];
+    // 如果父级存在一样的data则保留父级的
+    if (!hasOwn(to, key)) {
+      set(to, key, fromVal);
+    } else if (isPlainObject(toVal) && isPlainObject(fromVal)) {
+      mergeData(toVal, fromVal);
+    }
+  }
+  return to
+}
+```
