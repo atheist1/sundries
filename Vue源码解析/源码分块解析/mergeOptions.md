@@ -146,7 +146,8 @@ function mergeDataOrFn (parentVal,childVal,vm) { // 只有在new一个vue实例�
   }
 }
 ```
-mergeData函数
+mergeData函数,这里的data实际上是extend中和mixin中的data以及其他需要合并的data  
+跟父子组件之间的data并没有关系
 ```javascript
 function mergeData (to, from) {
   if (!from) { return to }
