@@ -105,7 +105,7 @@ ps: mixin会覆盖extend上的属性
     options[key] = strat(parent[key], child[key], vm, key);
   }
 ```
-1. props && el
+1. props && el  
 合并el和props采用的是default策略,即子级会覆盖父级
 ```javascript
 var defaultStrat = function (parentVal, childVal) {
@@ -114,7 +114,7 @@ var defaultStrat = function (parentVal, childVal) {
     : childVal
 };
 ```
-2. data
+2. data  
 合并data采用的是`mergeDataOrFn`函数
 ``` javascript
 function mergeDataOrFn (parentVal,childVal,vm) { // 只有在new一个vue实例的时候才会存在vm属性
