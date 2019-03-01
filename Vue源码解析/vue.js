@@ -1331,8 +1331,7 @@
       parentVal ?
       parentVal.concat(childVal) :
       Array.isArray(childVal) ?
-      childVal :
-      [childVal] :
+      childVal : [childVal] :
       parentVal
   }
 
@@ -1497,8 +1496,7 @@
         val = props[key];
         name = camelize(key);
         res[name] = isPlainObject(val) ?
-          val :
-          { type: val };
+          val : { type: val };
       }
     } else {
       warn(
@@ -1525,8 +1523,7 @@
       for (var key in inject) {
         var val = inject[key];
         normalized[key] = isPlainObject(val) ?
-          extend({ from: key }, val) :
-          { from: val };
+          extend({ from: key }, val) : { from: val };
       }
       /**
        * {
@@ -2377,8 +2374,7 @@
   // with hand-written render functions / JSX. In such cases a full normalization
   // is needed to cater to all possible types of children values.
   function normalizeChildren(children) {
-    return isPrimitive(children) ?
-      [createTextVNode(children)] :
+    return isPrimitive(children) ? [createTextVNode(children)] :
       Array.isArray(children) ?
       normalizeArrayChildren(children) :
       undefined
@@ -4916,6 +4912,8 @@
         // internal component options needs special treatment.
         initInternalComponent(vm, options);
       } else {
+        // 实例化vue组件走的是这里的合并
+        // 合并的是new vue传入的option以及构造函数上的option
         vm.$options = mergeOptions(
           resolveConstructorOptions(vm.constructor),
           options || {},
@@ -4993,6 +4991,8 @@
   }
 
   function resolveConstructorOptions(Ctor) {
+    // Ctor实际上是Vue构造函数
+    // option是构造函数上的option
     var options = Ctor.options;
     if (Ctor.super) {
       // 递归查找父级的options
@@ -5490,9 +5490,7 @@
   function mergeClassData(child, parent) {
     return {
       staticClass: concat(child.staticClass, parent.staticClass),
-      class: isDef(child.class) ?
-        [child.class, parent.class] :
-        parent.class
+      class: isDef(child.class) ? [child.class, parent.class] : parent.class
     }
   }
 
@@ -6930,8 +6928,7 @@
     key
   ) {
     return modules ?
-      modules.map(function(m) { return m[key]; }).filter(function(_) { return _; }) :
-      []
+      modules.map(function(m) { return m[key]; }).filter(function(_) { return _; }) : []
   }
 
   function addProp(el, name, value) {
@@ -7454,8 +7451,7 @@
     target$1.addEventListener(
       event,
       handler,
-      supportsPassive ?
-      { capture: capture, passive: passive } :
+      supportsPassive ? { capture: capture, passive: passive } :
       capture
     );
   }
@@ -7867,7 +7863,8 @@
     window.requestAnimationFrame ?
     window.requestAnimationFrame.bind(window) :
     setTimeout :
-    /* istanbul ignore next */ function(fn) { return fn(); };
+    /* istanbul ignore next */
+    function(fn) { return fn(); };
 
   function nextFrame(fn) {
     raf(function() {
