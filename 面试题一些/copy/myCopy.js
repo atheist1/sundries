@@ -48,7 +48,6 @@ let BFSdeepClone = (obj) => {
       let items = origin.shift(),
         _obj = copy.shift()
       visitedQueue.push(items)
-      visitedCopyQueue.push(_obj)
       if (isTypeOf(items, 'object') || isTypeOf(items, 'array')) {
         for (let item in items) {
           let val = items[item]
@@ -60,9 +59,9 @@ let BFSdeepClone = (obj) => {
               origin.push(val)
                 // 推入引用对象
               copy.push(_obj[item])
-              visitedQueue.push(val)
             } else {
               _obj[item] = visitedCopyQueue[index]
+              visitedQueue.push(_obj)
             }
           } else if (isTypeOf(val, 'array')) {
             // 数组类型在这里创建了一个空数组
@@ -75,12 +74,13 @@ let BFSdeepClone = (obj) => {
             _obj[item] = val
           }
         }
+        // 将已经处理过的对象数据推入数组 给环状数据使用
+        visitedCopyQueue.push(_obj)
       } else if (isTypeOf(items, 'function')) {
         copyObj = eval('(' + items.toString() + ')');
       } else {
         copyObj = obj
       }
-
     }
     return copyObj
   }
@@ -130,7 +130,7 @@ let obj = {
 }
 var objCopy = DFSdeepClone(obj)
 var objCopy1 = BFSdeepClone(obj)
-console.log(objCopy === objCopy1) // 对象类型判断 false 测试通过
+console.log(objCopy, objCopy1, objCopy === objCopy1) // 对象类型判断 false 测试通过
 console.log(obj.c === objCopy.c) // 对象类型判断 false 测试通过
 console.log(obj.c === objCopy1.c) // 对象类型判断 false 测试通过
 console.log(obj.b === objCopy1.b) // 函数类型判断 false 测试通过
