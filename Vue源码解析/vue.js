@@ -2219,12 +2219,14 @@
       event = normalizeEvent(name);
       /* istanbul ignore if */
       if (isUndef(cur)) {
+        // 传入的事件是一个字符串
         "development" !== 'production' && warn(
           "Invalid handler for event \"" + (event.name) + "\": got " + String(cur),
           vm
         );
       } else if (isUndef(old)) {
         if (isUndef(cur.fns)) {
+          // 为啥要用createFnInvoker返回一个闭包，是为了处理多个函数的情况
           cur = on[name] = createFnInvoker(cur);
         }
         // 没有old则增加
@@ -2814,6 +2816,8 @@
 
     // locate first non-abstract parent
     var parent = options.parent;
+    // 递归找到parent上第一个不是抽象组件
+    // 比如说keep-alive transistion这些就是一个抽象组件
     if (parent && !options.abstract) {
       while (parent.$options.abstract && parent.$parent) {
         parent = parent.$parent;
@@ -3539,6 +3543,16 @@
   //1008 
   function initProps(vm, propsOptions) {
     var propsData = vm.$options.propsData || {};
+    // propsData用的不多，主要是内部使用
+    // 外部使用在于，当用extend创建了一个全局扩展时
+    /**
+     * var header = Vue.extend({
+     *  // 一些配置
+     *  props: ['a']
+     * })
+     * new header({propsData: {a: 1}}).$mount('#app')
+     * propsData在这里使用
+     */
     var props = vm._props = {};
     // cache prop keys so that future props updates can iterate using Array
     // instead of dynamic object key enumeration.
