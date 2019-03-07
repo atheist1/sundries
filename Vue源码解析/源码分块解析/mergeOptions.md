@@ -204,7 +204,7 @@ function mergeAssets(
   LIFECYCLE_HOOKS.forEach(function(hook) {
     strats[hook] = mergeHook;
   });
-  ```
+  
 ```
 5. watch  
 对于watch的处理与hooks是类似的，因为需要监听每一个watch的变化，所有存在的watch都会被推入数组中去，最后返回的就是这个数组
