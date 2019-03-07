@@ -167,3 +167,102 @@ function mergeData (to, from) {
   return to
 }
 ```
+3.  component,directive,filter  
+合并component，directive，filter采用的是`mergeAssets`的方式（组件指令过滤器）
+``` javascript
+function mergeAssets(
+    parentVal,
+    childVal,
+    vm,
+    key
+  ) {
+  // 创建一个parent的副本
+    var res = Object.create(parentVal || null);
+    if (childVal) {
+      "development" !== 'production' && assertObjectType(key, childVal, vm);
+      // 将子级的属性浅复制到父级上，同名会被覆盖，子级覆盖父级的
+      return extend(res, childVal)
+    } else {
+      return res
+    }
+  }
+  4. mergeHooks  
+  生命周期函数的处理是连接合并， 而不是覆盖，最终返回的是一个数组，也证明了生命周期里是可以传入数组的
+  ```javascript
+  function mergeHook(
+    parentVal,
+    childVal
+  ) {
+    return childVal ?
+      parentVal ?
+      parentVal.concat(childVal) :
+      Array.isArray(childVal) ?
+      childVal : [childVal] :
+      parentVal
+  }
+
+  LIFECYCLE_HOOKS.forEach(function(hook) {
+    strats[hook] = mergeHook;
+  });
+  ```
+```
+5. watch  
+对于watch的处理与hooks是类似的，因为需要监听每一个watch的变化，所有存在的watch都会被推入数组中去，最后返回的就是这个数组
+```javascript
+  strats.watch = function(
+    parentVal,
+    childVal,
+    vm,
+    key
+  ) {
+    // work around Firefox's Object.prototype.watch...
+    // 火狐浏览器对象的原型链上存在一个watch属性，请注意
+    // 父节点不存在返回子，子节点不存在返回父，父子都存在用浅复制，因为watch不存在深复制的可能
+    if (parentVal === nativeWatch) { parentVal = undefined; }
+    if (childVal === nativeWatch) { childVal = undefined; }
+    /* istanbul ignore if */
+    if (!childVal) { return Object.create(parentVal || null) } {
+      assertObjectType(key, childVal, vm);
+    }
+    if (!parentVal) { return childVal }
+    var ret = {};
+    extend(ret, parentVal);
+    for (var key$1 in childVal) {
+      var parent = ret[key$1];
+      var child = childVal[key$1];
+      // parent数组化
+      if (parent && !Array.isArray(parent)) {
+        parent = [parent];
+      }
+      // 把watch推入ret对象中
+      ret[key$1] = parent ?
+        parent.concat(child) :
+        Array.isArray(child) ? child : [child];
+    }
+    return ret
+  };
+```
+6. props methos inject computed  
+这四个与match类似，没有父级返回子级没有子级返回父级，但是不同的是watch返回的是一个数组，而这里返回的是一个对象
+```javascript
+trats.props =
+strats.methods =
+strats.inject =
+strats.computed = function(
+  parentVal,
+  childVal,
+  vm,
+  key
+) {
+  if (childVal && "development" !== 'production') {
+    assertObjectType(key, childVal, vm);
+  }
+  if (!parentVal) { return childVal }
+  var ret = Object.create(null);
+  extend(ret, parentVal);
+  if (childVal) { extend(ret, childVal); }
+  return ret
+};
+```
+7. provide  
+`strats.provide = mergeDataOrFn;` ??
