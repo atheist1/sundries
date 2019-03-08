@@ -3535,7 +3535,7 @@
     }
     // 初始化计算属性
     if (opts.computed) { initComputed(vm, opts.computed); }
-    // 初始化watch
+    // 初始化watch   
     if (opts.watch && opts.watch !== nativeWatch) {
       initWatch(vm, opts.watch);
     }
