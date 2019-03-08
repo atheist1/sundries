@@ -41,3 +41,24 @@ Function.prototype._call = function (context) {
   return result
 }
 ```
+## apply
+apply其实与call是一致的，只是传入参数不同，apply传入的参数是一个数组
+``` javascript
+Function.prototype._apply = function (context,args) {
+  let fn = this // 获取绑定函数
+  let result
+  if (Object.prototype.toString.call(fn) !== '[object Function]') {
+    return new TypeError('no Function was found')
+  }
+  context.fn = fn
+  try {
+    result = context.fn(...args)
+  } catch (e) {
+    return e
+  }
+  delete context.fn
+  return result
+}
+```
+## bind
+bind 是一个强绑定过程，什么都不能改变这个里面this的指向
