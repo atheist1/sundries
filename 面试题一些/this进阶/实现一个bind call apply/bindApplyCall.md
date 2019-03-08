@@ -126,3 +126,27 @@ if (!Function.prototype.bind) {
   };
 }
 ```
+### bind进阶2
+在this进阶里我们说过一种软化绑定的方式，当通过bind出来的函数在执行过程中，执行上下文为默认绑定，即全局对象时，我们将会退回绑定的对象而不是默认绑定。  
+这种实现方式实际上就是手写bind的另一种变形
+```javascript
+Function.prototype.softBind = function (oThis) {
+ if (typeof this !== "function") {
+   // closest thing possible to the ECMAScript 5 internal IsCallable function
+   throw new TypeError("Function.prototype.bind - what is trying to be bound is not callable");
+ }
+ var aArgs = Array.prototype.slice.call(arguments, 1),
+      fToBind = this,
+      fBound = function() {
+        return fToBind.apply(
+          (!this || (typeof window !== 'undefined' && this === window) ||
+						(typeof global !== "undefined" &&
+							this === global)
+					) ) ? obj : this
+          aArgs.concat(Array.prototype.slice.call(arguments)));
+      };
+    fBound.prototype = Object.create(fToBind.prototype)
+
+    return fBound;
+}
+```
