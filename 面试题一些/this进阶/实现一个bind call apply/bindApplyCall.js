@@ -76,6 +76,6 @@ if (!Function.prototype.bind) {
     fNOP.prototype = this.prototype;
     fBound.prototype = new fNOP();
 
-    return fBound;
+    return fBound
   };
 }
