@@ -6,12 +6,14 @@ function myPromise(fn) {
     if (state === 'pending') {
       state = 'fullfiled'
       value = newVal
+      execute()
     } else if (state === 'fullfiled') {}
   }
   let reject = function(newVal) {
       if (state === 'pending') {
         state = 'reject'
         value = newVal
+        execute()
       }
     }
     /**
@@ -45,6 +47,15 @@ function myPromise(fn) {
     } catch (e) {
       cb.reject(e)
     }
+  }
+
+  function execute() {
+    // macrotask推入任务栈
+    setTimeout(function() {
+      callbacks.forEach(function(callback) {
+        handler(callback)
+      })
+    }, 0)
   }
   try {
     fn(resolve, reject)

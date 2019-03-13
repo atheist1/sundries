@@ -11,7 +11,7 @@ function myPromise(fn) {
     if (state === 'pending') {
       state = 'fullfiled'
       value = newVal
-      execute(0)
+      execute()
     }
   }
   let reject = function (newVal) {
@@ -65,3 +65,26 @@ let handler = function (cb) {
   }
 }
 ```
+接下来我们分析resolve和reject方法做了什么
+```javascript
+let resolve = function (newVal) {
+  if (state === 'pending') {
+    state = 'fullfiled'
+    value = newVal
+    execute()
+  }
+}
+function execute() { // 执行队列
+  // macrotask推入任务栈
+  setTimeout(function () {
+    callbacks.forEach(function (callback) {
+      handler(callback)
+    })
+  }, 0)
+}
+```
+如上所示，resolve与reject内部主要是做了三个操作
+1. 将状态改变
+2. 将值改变成新值
+3. execute函数调用
+execute函数实际上就是事件队列的黑科技，利用timeout将所有在cb里的事件最后进行处理，cb里的函数只有在执行handler且state为pending时才会被推入,如果部位pending就执行了
