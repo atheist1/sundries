@@ -15,15 +15,35 @@ function myPromise(fn) {
       }
     }
     /**
-     * cb 包括 resolve reject
+     * cb 包括onFulfilled onReject resolve reject
      */
-  let handler = function(cb) { // 执行函数
-    if (state === 'pending') { // 如果还在执行则延后执行
+  let handler = function(cb) {
+    // 这个state是上一个promise对象的state
+    // 如果这个对象还在pending中的话，直接把下一个then中的promise对象的方法推入回调栈中
+    // 当这个对象完成，将会执行这个方法，生成一个新的promise对象
+    if (state === 'pending') {
       callbacks.push(cb)
       return
     }
-    if (state === 'fullfiled') { // 由上一个promise then处理到此
-      cb.onFulfilled(value) // 处理完成函数需要把上一个value传入
+    var cba = state === 'fullfilled' ? cb.onFulfilled : cb.onRejected,
+      ret
+      // 如果直接是执行完成了的话，就直接执行下一次的promise
+      // 这是最终完成的步骤 onFulfilled可能是个promise对象，也可能就是个普通的函数，这样就实现了把数据传递的过程
+      // 将上一个value传入了
+      // then里面没有传递任何东西,以及下一个then为空
+    if (cb === null) {
+      cba = state === 'fullfilled' ? resolve : reject
+      cb(value)
+      return
+    }
+    try {
+      ret = cba(value)
+        // 并且执行下一个promise的resolve方法 并且传入了上一次的参数
+        // 这个ret实际上是then方法里传入的promise对象
+        // 执行resolve
+      cb.resolve(ret)
+    } catch (e) {
+      cb.reject(e)
     }
   }
   try {

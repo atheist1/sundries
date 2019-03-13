@@ -11,13 +11,23 @@ function myPromise(fn) {
     if (state === 'pending') {
       state = 'fullfiled'
       value = newVal
-    } else if (state === 'fullfiled')
+      execute(0)
+    }
   }
   let reject = function (newVal) {
     if (state === 'pending') {
       state = 'reject'
       value = newVal
+      execute()
     }
+  }
+  function execute() { // 执行队列
+    // macrotask推入任务栈
+    setTimeout(function () {
+      callbacks.forEach(function (callback) {
+        handler(callback)
+      })
+    }, 0)
   }
   try {
     fn(resolve, reject)
@@ -26,4 +36,32 @@ function myPromise(fn) {
   }
 }
 ```
-接下来我们就要想办法解决以下链式调用的问题了，当调用promise.then方法时,我们需要返回一个新的promise实例
+接下来我们就要想办法解决以下链式调用的问题了，当调用promise.then方法时,我们需要返回一个新的promise实例，then方法里实际上是执行了一次handler函数，我们看下handler函数到底做了什么操作
+```javascript
+/*
+  cb是一个对象，它存在四个属性
+  onFulfilled -> 对应的是外部使用then传入的第一个参数，代表处理上次成功的回调
+  onReject -> 对应的是外部使用then传入的第二个参数，代表处理失败的回调
+  resolve -> 内部对于成功的处理，将状态更新
+  reject -> 内部对于失败的处理，将状态更新
+*/
+let handler = function (cb) {
+  // 这里分成了几种情况
+  // 1. 状态尚未被resolve即等待上一个resolve，先把当前回调推入
+  if (state === 'pending') {callbacks.push(cb) return}
+  // 2. 上一个链已经完成
+  var cba = cb.onFullfiled ? cb.onFullfiled : cb.onReject, ret // 如果没有传入方法，则使用onReject方法，如果onReject方法也没有，通过try catch抛出异常并用reject接受
+  // 3. then里面没有传递任何东西,以及下一个then为空
+  if (cb === null ) {
+    cba = state === 'fullfilled' ? resolve : reject
+    cb(value)
+    return
+  }
+  try {
+    var ret = cba(value)
+    cb.resolve(ret) // then方法里返回的数据也要被resolve掉
+  } catch(e) {
+    cb.reject(e)
+  }
+}
+```
