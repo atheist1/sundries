@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -10,11 +11,13 @@
       margin: 0;
       padding: 0;
     }
+    
     .container {
       display: flex;
       align-items: flex-end;
       justify-content: space-between;
     }
+    
     .cylinder {
       display: flex;
       position: relative;
@@ -26,7 +29,9 @@
       align-items: center;
       transition: all 1s linear;
     }
-    .cylinder::before,.cylinder::after {
+    
+    .cylinder::before,
+    .cylinder::after {
       content: '';
       display: block;
       border-radius: 100%;
@@ -34,17 +39,29 @@
       width: 100%;
       background: #333;
     }
-    .cylinder::before{
-      transform:translateY(-5px)
+    
+    .cylinder::before {
+      transform: translateY(-5px)
     }
+    
     .cylinder::after {
-      transform:translateY(5px)
+      transform: translateY(5px)
     }
   </style>
 </head>
+
 <body>
   <div class="container">
   </div>
 </body>
 <script src="./sort.js"></script>
+<script>
+  var quick = function(arr, left, right) {
+    var partition = right
+      // dosomething -> 处理函数
+    quick(arr, left, partition - 1) // 对左半部分处理
+    quick(arr, partition + 1, right) // 对右半部分处理
+  }
+</script>
+
 </html>
