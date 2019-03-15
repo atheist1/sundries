@@ -54,3 +54,16 @@ var buble = function (arr) {
   return arr
 }
 ```
+## 快速排序
+快排是排序算法中也不算难的几种算法之一
+难度：3颗星
+原理: 分治法算法，对一个数组进行不断地进行一个函数处理，把左边的变成比基准小的，右边的变成比基准大的，然后改变基准递归左半部分和右半部分就可以实现排序
+代码: 
+```javascript
+var quickSort = function (arr, left = 0, right = arr.length - 1) {
+  let partition = right
+  // dosomething
+  quickSort(arr, left, partition - 1)
+  quickSort(arr, partition + 1, right)
+}
+```
