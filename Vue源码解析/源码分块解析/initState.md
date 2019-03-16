@@ -10,8 +10,10 @@ function initState(vm) {
   if (opts.props) { initProps(vm, opts.props); }
   // 如果有方法，初始化方法
   if (opts.methods) { initMethods(vm, opts.methods); }
-  // 初始化数据
+  // 初始化数据111
   if (opts.data) {
+
+
     initData(vm);
   } else {
     // 没有数据，观察一个空对象
