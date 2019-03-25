@@ -3100,6 +3100,7 @@
       for (var i = 0; i < vm.$children.length; i++) {
         activateChildComponent(vm.$children[i]);
       }
+      // 给keep-alive使用的生命周期
       callHook(vm, 'activated');
     }
   }
