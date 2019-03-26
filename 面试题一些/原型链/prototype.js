@@ -115,3 +115,45 @@ class Square extends Rectangle {
 let tr1 = new Rectangle(10, 32)
 let s1 = new Square(10)
 console.log(tr1.getWidth(), tr1.getHeight())
+
+
+/** 面经介绍三种继承方式 */
+// 组合式继承
+function Parent(value) {
+  this.val = value
+}
+Parent.prototype.getVal = function (){
+  return this.val
+}
+function Child (value) {
+  Parent.call(this,value)
+}
+Child.prototype = new Parent()
+const child = new Child(1)
+child.getValue() // 1
+child instanceof Parent // true
+// 这种方式会导致多使用了一次父级构造函数，将父级无用属性绑定到了子集上面
+
+// 2，寄生组合式继承
+function Parent1(value) {
+  this.val = value
+}
+Parent1.prototype.getVal = function (){
+  return this.val
+}
+function Child1 (value) {
+  Parent.call(this,value)
+}
+// 用object.create代替一次new构造过程
+Child1.prototype = Object.create(Parent.prototype, {
+  constructor:  {
+    value: Child1,
+    enumerable: false,
+    writable: true,
+    configurable: true
+   }
+})
+const child1 = new Child(1)
+child1.getValue() // 1
+child1 instanceof Parent // true
+// 3.es6 class
