@@ -1,5 +1,5 @@
 # 前言
-最近看代码发现Object.defineProperty和Proxy这两个东西出现的比较频繁，包括Vue源码，包括即将到来的vue3，包括一些库，所以我们这里将这两个东西抽取出来做一个规整。
+最近看代码发现Object.defineProperty和Proxy这两个东西出现的比较频繁，包括Vue源码，包括即将到来的vue3，包括一些库，所以我们这里将这两个东西抽取出来做一个规整。  
 本篇参考自MDN。虽然是在炒现饭，但是更多的是自己养成写blog的习惯。
 ## Object.defineProperty
 ### 语法:
@@ -258,6 +258,6 @@ arr1[0] = 2 // 1 arr1 = [2,2,3]
 虽然proxy很好用，但是他存在最大的问题就是兼容性，根据MDN所给出的兼容来看，对于edge以下的所有ie浏览器都不支持([MDN浏览器兼容](https://developer.mozilla.org/zh-CN/docs/Web/JavaScript/Reference/Global_Objects/Proxy#%E6%B5%8F%E8%A7%88%E5%99%A8%E5%85%BC%E5%AE%B9%E6%80%A7))。但是当初Vue刚出来的时候DefineProperty实际上也是存在兼容问题的，实践证明优秀的东西是不会被淘汰的。
 拒绝IE从你我做起。
 ### 后记
-如果文章出现问题欢迎小伙伴一起指出，共同进步~
-该篇文章收录到我的[github](https://github.com/atheist1/sundries/blob/master/%E9%9D%A2%E8%AF%95%E9%A2%98%E4%B8%80%E4%BA%9B/Object%26Proxy/object%26proxy.md)中，有兴趣小伙伴可以给个star，近期将对文档库做一个规整~
-最后求一个深圳内推 130985264@qq.com
+如果文章出现问题欢迎小伙伴一起指出，共同进步~  
+该篇文章收录到我的[github](https://github.com/atheist1/sundries/blob/master/%E9%9D%A2%E8%AF%95%E9%A2%98%E4%B8%80%E4%BA%9B/Object%26Proxy/object%26proxy.md)中，有兴趣小伙伴可以给个star，近期将对文档库做一个规整~  
+最后求一个深圳内推 130985264@qq.com  
