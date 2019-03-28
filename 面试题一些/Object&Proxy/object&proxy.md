@@ -1,6 +1,6 @@
 # 前言
 最近看代码发现Object.defineProperty和Proxy这两个东西出现的比较频繁，包括Vue源码，包括即将到来的vue3，包括一些库，所以我们这里将这两个东西抽取出来做一个规整。  
-本篇参考自MDN。虽然是在炒现饭，但是更多的是自己养成写blog的习惯。
+本篇参考MDN。虽然是在炒现饭，更多的是自己养成写blog的习惯。
 ## Object.defineProperty
 ### 语法:
 ```Object.defineProperty(obj,prop,descriptor)```
@@ -13,25 +13,43 @@
 ### 介绍:
 obj和prop我们不必多说，就像定义一个对象一样，键值对使用。我们主要重点介绍一下descriptor:
 #### 数据描述符
-``value``  
-表示该属性对应的值，可以是任意js值，默认为undefined
-``writable``  
-表示该属性是否可写，只有为true的时候该属性才能被赋值运算符改变，默认为false
+##### value   
+```表示该属性对应的值，可以是任意js值，默认为undefined```   
+##### writable  
+```表示该属性是否可写，只有为true的时候该属性才能被赋值运算符改变，默认为false```
 
 #### 存取描述符
-``get``  
-一个给属性提供getter的方法，如果没有getter则为undefined，当使用obj.xxx时将会调用该方法，并将返回值作为取得的值，该方法不会传参，但是this指向的是被定义的对象(obj)
-``set``  
-一个给属性提供setter的方法，如果没有则为undefined，当对属性赋值时会触发该函数，该函数传入唯一一个参数，就是newVal
+##### get 
+```
+一个给属性提供getter的方法，默认为undefined。
+当使用obj.xxx时将会调用该方法，并将返回值作为取得的值，该方法不会传参。
+this指向的是被定义的对象(obj)
+```
+##### set   
+```
+一个给属性提供setter的方法，默认为undefined。  
+当对属性赋值时会触发该函数。 
+该函数传入唯一一个参数，就是newVal
+```
 
 #### 公共描述符
-上述两个描述符是互斥的，如果你定义了get又定义了value，将会报错，而公共描述符是指可以为该属性定义公共的描述符
-``enumerable``  
-只有该属性enumerable为true时该属性才会出现在对象的可枚举属性中，默认为false。(可枚举属性决定了该属性是否会被for in循环找到，forin会找到继承的可枚举属性，想要找到自身的用Object.keys)
-``configurable``  
-只有该属性的configurable为true时，该属性才能修改描述符，才能使用delete删除该属性值，否则删除会返回false并删除失败，默认为false。
+上述两个描述符是互斥的，如果你定义了get又定义了value，将会报错，而公共描述符是指可以为该属性定义公共的描述符  
+##### enumerable    
+```
+只有该属性enumerable为true时该属性才会出现在对象的可枚举属性中。
+默认为false。
+(可枚举属性决定了该属性是否会被for in循环找到。 
+for in会找到继承的可枚举属性，想要找到自身的用Object.keys)
+```  
+##### configurable   
+```
+只有该属性的configurable为true时，该属性才能修改描述符，才能使用delete删除该属性值。  
+否则删除会返回false并删除失败，默认为false。
+```
 
-``ps:以上这些描述符不一定指自身属性，继承来的属性也需要考虑在内，所以需要通过Object.create(null)创建一个原型指向null的对象作为继承对象。``
+```
+ps:以上这些描述符不一定指自身属性，继承来的属性也需要考虑在内，所以需要通过Object.create(null)创建一个原型指向null的对象作为继承对象。
+```
 
 ### 作用
 按照原理来说他是作为一个拦截层一样，拦截对象属性的get或者set或者value，比如Vue中的对响应式数据的创建。
@@ -77,10 +95,10 @@ Object.defineProperty(obj, key, {
 ### 语法
 ``let p = new Proxy(target,handler)``
 ### 参数
-``target``  
-使用proxy包装的目标对象(可以是任意类型的对象，包括原生数组，函数甚至是另一个代理)
-``handler``  
-一个对象,操作代理时的函数
+##### target  
+```使用proxy包装的目标对象(可以是任意类型的对象，包括原生数组，函数甚至是另一个代理)```  
+##### handler
+``一个对象,操作代理时的函数``
 ### 示例
 1. get
 ```javascript
@@ -204,9 +222,17 @@ let products = new Proxy(arr,{
 ```
 当然Proxy可以劫持的属性多达13种，我们这里只是做一个简单的介绍
 ## 对比
-proxy是即将到来的vue3代替Object.definePrototype的实现，至于为什么要用proxy代替我们大概可以阐述出以下几个观点:
-1. ``proxy劫持的是整个对象，而不需要对对象的每一个属性进行拦截，这样将减少之前对于为了实现整体对象响应式而递归对对象每一个属性进行拦截的操作，大大优化了性能``  
-2. ```对于defineProperty有一个致命的弱点，就是他没有办法监听数组的变化，为了解决这个问题，vue在底层对数组的方法进行了hack，监听了每一次数组特定的操作，并为操作后的数组实现响应式。```
+proxy是即将到来的vue3代替Object.definePrototype的实现，至于为什么要用proxy代替我们大概可以阐述出以下几个观点:  
+1. 
+```
+proxy劫持的是整个对象，而不需要对对象的每一个属性进行拦截。  
+这样将减少之前对于为了实现整体对象响应式而递归对对象每一个属性进行拦截的操作，大大优化了性能
+```
+2. 
+```
+对于defineProperty有一个致命的弱点，就是他没有办法监听数组的变化。  
+为了解决这个问题，vue在底层对数组的方法进行了hack，监听了每一次数组特定的操作，并为操作后的数组实现响应式。
+```
 ```javascript
   methodsToPatch.forEach(function(method) {
     // cache original method
@@ -247,7 +273,7 @@ proxy是即将到来的vue3代替Object.definePrototype的实现，至于为什�
 let arr = [1,2,3]
 let arr1 = new Proxy(arr,{
 	set:function(target,key,newVal) {
-    target[key] = newVal
+        target[key] = newVal
 		console.log(1)
 	}
 })
@@ -255,9 +281,9 @@ arr1[0] = 2 // 1 arr1 = [2,2,3]
 ```
 
 ### 兼容
-虽然proxy很好用，但是他存在最大的问题就是兼容性，根据MDN所给出的兼容来看，对于edge以下的所有ie浏览器都不支持([MDN浏览器兼容](https://developer.mozilla.org/zh-CN/docs/Web/JavaScript/Reference/Global_Objects/Proxy#%E6%B5%8F%E8%A7%88%E5%99%A8%E5%85%BC%E5%AE%B9%E6%80%A7))。但是当初Vue刚出来的时候DefineProperty实际上也是存在兼容问题的，实践证明优秀的东西是不会被淘汰的。
+虽然proxy很好用，但是他存在最大的问题就是兼容性，根据MDN所给出的兼容来看，对于edge以下的所有ie浏览器都不支持([MDN浏览器兼容](https://developer.mozilla.org/zh-CN/docs/Web/JavaScript/Reference/Global_Objects/Proxy#%E6%B5%8F%E8%A7%88%E5%99%A8%E5%85%BC%E5%AE%B9%E6%80%A7))。但是当初Vue刚出来的时候defineProperty实际上也是存在兼容问题的，实践证明优秀的东西是不会被淘汰的。
 拒绝IE从你我做起。
-### 后记
+# 后记
 如果文章出现问题欢迎小伙伴一起指出，共同进步~  
 该篇文章收录到我的[github](https://github.com/atheist1/sundries/blob/master/%E9%9D%A2%E8%AF%95%E9%A2%98%E4%B8%80%E4%BA%9B/Object%26Proxy/object%26proxy.md)中，有兴趣小伙伴可以给个star，近期将对文档库做一个规整~  
 最后求一个深圳内推 130985264@qq.com  
