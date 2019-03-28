@@ -1,5 +1,6 @@
-# Object & Proxy
-最近看代码发现Object.defineProperty和Proxy这两个东西出现的比较频繁，包括Vue源码，包括即将到来的vue3，包括一些库，所以我们这里将这两个东西抽取出来做一个规整
+# 前言
+最近看代码发现Object.defineProperty和Proxy这两个东西出现的比较频繁，包括Vue源码，包括即将到来的vue3，包括一些库，所以我们这里将这两个东西抽取出来做一个规整。
+本篇参考自MDN。虽然是在炒现饭，但是更多的是自己养成写blog的习惯。
 ## Object.defineProperty
 ### 语法:
 ```Object.defineProperty(obj,prop,descriptor)```
@@ -80,8 +81,6 @@ Object.defineProperty(obj, key, {
 使用proxy包装的目标对象(可以是任意类型的对象，包括原生数组，函数甚至是另一个代理)
 ``handler``  
 一个对象,操作代理时的函数
-### 兼容性
-proxy的兼容性不算很好，对于所有除了edge的Ie浏览器全部不兼容。
 ### 示例
 1. get
 ```javascript
@@ -203,10 +202,11 @@ let products = new Proxy(arr,{
   }
 })
 ```
+当然Proxy可以劫持的属性多达13种，我们这里只是做一个简单的介绍
 ## 对比
 proxy是即将到来的vue3代替Object.definePrototype的实现，至于为什么要用proxy代替我们大概可以阐述出以下几个观点:
-1. proxy劫持的是整个对象，而不需要对对象的每一个属性进行拦截，这样将减少vue之前的版本对于为了实现整体对象响应式而递归去对相应对象每一个属性进行拦截的操作，大大优化了性能
-2. 对于defineProperty有一个致命的弱点，就是他没有办法监听数组的变化，为了解决这个问题，vue在底层对数组的方法进行了hack，监听了每一次数组特定的操作，并为操作后的数组实现响应式。
+1. ``proxy劫持的是整个对象，而不需要对对象的每一个属性进行拦截，这样将减少之前对于为了实现整体对象响应式而递归对对象每一个属性进行拦截的操作，大大优化了性能``  
+2. ```对于defineProperty有一个致命的弱点，就是他没有办法监听数组的变化，为了解决这个问题，vue在底层对数组的方法进行了hack，监听了每一次数组特定的操作，并为操作后的数组实现响应式。```
 ```javascript
   methodsToPatch.forEach(function(method) {
     // cache original method
@@ -243,7 +243,21 @@ proxy是即将到来的vue3代替Object.definePrototype的实现，至于为什�
   });
 ```
 虽然在vue底层对数组进行了hack，由于defineProperty是没有办法进行监听数组角标而导致的变化的，无可奈何下只能提供了一个$set方法进行响应收集，而在proxy里是不存在这个问题的。
+```javascript
+let arr = [1,2,3]
+let arr1 = new Proxy(arr,{
+	set:function(target,key,newVal) {
+    target[key] = newVal
+		console.log(1)
+	}
+})
+arr1[0] = 2 // 1 arr1 = [2,2,3]
+```
 
-### ps
-虽然proxy很好用，但是他存在最大的问题就是兼容性，根据MDN所给出的兼容来看，对于edge以下的所有ie浏览器都不支持。但是当初Vue刚出来的时候DefineProperty实际上也是存在兼容问题的，实践证明优秀的东西是不会被淘汰的。
-拒绝IE从你我坐骑
+### 兼容
+虽然proxy很好用，但是他存在最大的问题就是兼容性，根据MDN所给出的兼容来看，对于edge以下的所有ie浏览器都不支持([MDN浏览器兼容](https://developer.mozilla.org/zh-CN/docs/Web/JavaScript/Reference/Global_Objects/Proxy#%E6%B5%8F%E8%A7%88%E5%99%A8%E5%85%BC%E5%AE%B9%E6%80%A7))。但是当初Vue刚出来的时候DefineProperty实际上也是存在兼容问题的，实践证明优秀的东西是不会被淘汰的。
+拒绝IE从你我做起。
+### 后记
+如果文章出现问题欢迎小伙伴一起指出，共同进步~
+该篇文章收录到我的[github](https://github.com/atheist1/sundries/blob/master/%E9%9D%A2%E8%AF%95%E9%A2%98%E4%B8%80%E4%BA%9B/Object%26Proxy/object%26proxy.md)中，有兴趣小伙伴可以给个star，近期将对文档库做一个规整~
+最后求一个深圳内推 130985264@qq.com
