@@ -5,29 +5,29 @@
 ```Object.defineProperty(obj,prop,descriptor)```
 
 ### 参数:
-``obj -> 需要劫持的对象 ``
-``prop -> 劫持的属性``
+``obj -> 需要劫持的对象 ``  
+``prop -> 劫持的属性``  
 ``descriptor -> 属性描述符``
 
 ### 介绍:
 obj和prop我们不必多说，就像定义一个对象一样，键值对使用。我们主要重点介绍一下descriptor:
 #### 数据描述符
-``value``
+``value``  
 表示该属性对应的值，可以是任意js值，默认为undefined
-``writable``
+``writable``  
 表示该属性是否可写，只有为true的时候该属性才能被赋值运算符改变，默认为false
 
 #### 存取描述符
-``get``
+``get``  
 一个给属性提供getter的方法，如果没有getter则为undefined，当使用obj.xxx时将会调用该方法，并将返回值作为取得的值，该方法不会传参，但是this指向的是被定义的对象(obj)
-``set``
+``set``  
 一个给属性提供setter的方法，如果没有则为undefined，当对属性赋值时会触发该函数，该函数传入唯一一个参数，就是newVal
 
 #### 公共描述符
 上述两个描述符是互斥的，如果你定义了get又定义了value，将会报错，而公共描述符是指可以为该属性定义公共的描述符
-``enumerable``
+``enumerable``  
 只有该属性enumerable为true时该属性才会出现在对象的可枚举属性中，默认为false。(可枚举属性决定了该属性是否会被for in循环找到，forin会找到继承的可枚举属性，想要找到自身的用Object.keys)
-``configurable``
+``configurable``  
 只有该属性的configurable为true时，该属性才能修改描述符，才能使用delete删除该属性值，否则删除会返回false并删除失败，默认为false。
 
 ``ps:以上这些描述符不一定指自身属性，继承来的属性也需要考虑在内，所以需要通过Object.create(null)创建一个原型指向null的对象作为继承对象。``
@@ -76,9 +76,9 @@ Object.defineProperty(obj, key, {
 ### 语法
 ``let p = new Proxy(target,handler)``
 ### 参数
-``target``
+``target``  
 使用proxy包装的目标对象(可以是任意类型的对象，包括原生数组，函数甚至是另一个代理)
-``handler``
+``handler``  
 一个对象,操作代理时的函数
 ### 兼容性
 proxy的兼容性不算很好，对于所有除了edge的Ie浏览器全部不兼容。
