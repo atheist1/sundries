@@ -2,16 +2,16 @@
 这里是前端aaa君的一块自留地，养成写blog的好习惯是技术提升的一部分。
 # 目录
 项目主要分几部分
-1. [element ui解析](https://github.com/atheist1/sundries/tree/master/element%E4%B8%80%E4%BA%9B%E4%BB%A3%E7%A0%81)
+1. [element ui解析](https://github.com/atheist1/sundries/tree/master/element%E4%B8%80%E4%BA%9B%E4%BB%A3%E7%A0%81)  
 这一部分关于饿了么ui组件库的实现研究，还在更新当中
-2. [jQuery解析](https://github.com/atheist1/sundries/tree/master/Jq%E6%BA%90%E7%A0%81%E5%8F%8A%E5%85%B6%E4%BB%96)
+2. [jQuery解析](https://github.com/atheist1/sundries/tree/master/Jq%E6%BA%90%E7%A0%81%E5%8F%8A%E5%85%B6%E4%BB%96)  
 这一块主要关于jquery的代码分析以及与jquery相关的代码整合。  
 [jquery源码(待分析)](https://github.com/atheist1/sundries/blob/master/Jq%E6%BA%90%E7%A0%81%E5%8F%8A%E5%85%B6%E4%BB%96/jquery%E6%BA%90%E7%A0%81/jquery.js)  
 [jquery无new构造实现](https://github.com/atheist1/sundries/blob/master/Jq%E6%BA%90%E7%A0%81%E5%8F%8A%E5%85%B6%E4%BB%96/jquery%E6%BA%90%E7%A0%81/jqNoNew.js)  
 [Promise源码及注释](https://github.com/atheist1/sundries/blob/master/Jq%E6%BA%90%E7%A0%81%E5%8F%8A%E5%85%B6%E4%BB%96/promise.js)  
 [手写Promise解析](https://github.com/atheist1/sundries/tree/master/%E9%9D%A2%E8%AF%95%E9%A2%98%E4%B8%80%E4%BA%9B/promise)  
 
-3. [Vue解析](https://github.com/atheist1/sundries/tree/master/Vue%E6%BA%90%E7%A0%81%E8%A7%A3%E6%9E%90)
+3. [Vue解析](https://github.com/atheist1/sundries/tree/master/Vue%E6%BA%90%E7%A0%81%E8%A7%A3%E6%9E%90)  
 这部分是对Vue源码解析以及Vue相关内容整合，包括以下部分。  
 [Vue源码注释版](https://github.com/atheist1/sundries/blob/master/Vue%E6%BA%90%E7%A0%81%E8%A7%A3%E6%9E%90/vue.js)(Vue源码的自我阅读分析)  
 [Vue源码分块解析(ing)](https://github.com/atheist1/sundries/tree/master/Vue%E6%BA%90%E7%A0%81%E8%A7%A3%E6%9E%90/%E6%BA%90%E7%A0%81%E5%88%86%E5%9D%97%E8%A7%A3%E6%9E%90)  
