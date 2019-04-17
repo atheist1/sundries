@@ -35,7 +35,7 @@ class Bitmap {
         this.bit_arr = bit_arr
     }
     addMember(member) {
-        var arr_index = parseInt(member / 32) // 获取存入数字是在哪个位置 0号位储存0-31 1号位储存 32-63
+        var arr_index = Math.floor(member / 32) // 获取存入数字是在哪个位置 0号位储存0-31 1号位储存 32-63
         var bit_index = member % 32 // 获取数字所在二进制位
         // 解释下下面的代码 按位或 1 | 1 = 1 0 | 1 = 1 0 | 0 = 0
         // 使用按位或以后将相同位置的1不变,第一次出现数字所在位置置为1,这样就实现了32位记录多个数字
@@ -47,6 +47,26 @@ class Bitmap {
         var bit_index = member % 32
         // 00000001 00000101 表示5 和 2
         // 这时候
-        return !!this.bit_arr[arr_index] & 1 << bit_index // 通过按位与判断是否存在
+        var value = this.bit_arr[arr_index] & 1 << bit_index // 通过按位与判断是否存在
+        if (value != 0) {
+            return true
+        }
+        return false
     }
 }
+// 利用bitmap实现数组求交集
+function intersection(arr1,arr2) {
+    let bit = new Bitmap(4)
+    let arr = arr1.concat(arr2)
+    let intersectionArr = []
+    for(let i = 0; i < arr.length; i++){
+        debugger
+        if (bit.isExist(arr[i])) {
+            intersectionArr.push(arr[i])
+        } else {
+            bit.addMember(arr[i])
+        }
+    }
+    return intersectionArr
+}
+console.log(intersection([1,2,3,4,0,92,7], [7,92,91,2]))
