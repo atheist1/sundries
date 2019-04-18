@@ -1,5 +1,5 @@
 // 队列
-// 与栈不同的是满足先进先出后进后出原则
+// 与栈不同的是满足先进先出后进后出原则111
 class Queue {
     constructor() {
         this._innerQueue = []
