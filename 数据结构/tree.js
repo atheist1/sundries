@@ -14,7 +14,7 @@ class Tree {
     this.node = null
     this.init(str)
     // 遇到
-  }
+  } 
   // init(str) {
   //   let stack = new Stack()
   //   // 左右括号逗号都表示不同的情况
