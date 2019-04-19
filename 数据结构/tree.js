@@ -206,6 +206,45 @@ class Tree {
     // 同样的事情做层数次，每次node保存的都是父节点
     return left != null ? left : right
   }
+  // 下面两个都是求k层的节点数，第二个方法会更加好
+  getWidth(node, n) {
+    let arr = [1]
+    let index = 1
+    let num = 1
+    var get_width = (node) => {
+      if (!node) {
+        return 0
+      }
+      // 存在左右节点才行
+      if (!arr[num] && (node.leftChild || node.rightChild)) {
+        arr[num] = 0
+      } 
+      if (node.leftChild ) {
+        arr[num] += 1
+      }
+      if (node.rightChild) {
+        arr[num] += 1
+      }
+      num ++
+      get_width(node.leftChild)
+      get_width(node.rightChild)
+      // 回溯的时候将深度减少，当然用栈处理也可以了
+      num --
+      return index
+    }
+    get_width(node)
+    return  arr[n - 1]
+  }
+  getNodeNumsOnKthLevel(node, n) {
+    if(node == null || n < 0)
+			return 0
+		if(n == 0)
+      return 1
+    // 不到0就继续往下递归，到0则返回1，一层层加上去
+    let left = this.getNodeNumsOnKthLevel(node.leftChild, n - 1)
+    let right = this.getNodeNumsOnKthLevel(node.rightChild, n - 1)
+    return left + right
+  }
 }
 let tree = new Tree('A(B(D,E(G,)),C(,F))')
 tree.pre_order(console.log)
@@ -217,4 +256,5 @@ console.log(tree.size(),tree.getHeight())
 // tree.reverse(tree.node)
 console.log(tree.findNode(tree.node, 'N'),tree.in_order(console.log),tree.node)
 console.log(tree.closetsParent(tree.node, tree.findNode(tree.node, 'D'), tree.findNode(tree.node, 'F')))
-// 寻找两个节点的最近公共父节点
+console.log(tree.getWidth(tree.node, 5))
+console.log(tree.getNodeNumsOnKthLevel(tree.node, 4))
