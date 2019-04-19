@@ -105,6 +105,36 @@ class Tree {
   getHeight() {
     // return this.height
     // 其他做法，左子树右子树高度取最大值，最后加上当前高度
+    let root = this.node
+    let count_height = (node) => {
+      if (!node) {
+        // 到达最底层，返回0
+        return 0
+      }
+      let left_height = count_height(node.leftChild)
+      let right_height = count_height(node.rightChild)
+      // 返回的是最深层的
+      if (left_height > right_height) {
+        return left_height + 1
+      } else {
+        return right_height + 1
+      }
+    }
+    return count_height(root)
+  }
+  // 查找节点
+  findNode(node, data) {
+    if (!node) {
+      return null
+    }
+    if (node.data === data) {
+      return node
+    }
+    let res = this.findNode(node.leftChild,data)
+    if (res) {
+      return res
+    }
+    return this.findNode(node.rightChild,data)
   }
   // 中序优先遍历
   // 左根右
@@ -148,11 +178,43 @@ class Tree {
     }
     last(root)
   }
+  // 翻转左右节点
+  // 练习题，翻转一个链表
+  // 每个节点的左右子树进行对换
+  reverse(node) {
+    if (!node) {
+      return
+    }
+    this.reverse(node.leftChild)
+    this.reverse(node.rightChild)
+    let temp = node.rightChild
+    node.rightChild = node.leftChild
+    node.leftChild = temp
+  }
+  closetsParent(node, o1, o2) {
+    // 向下递归，找到节点相同时则返回节点
+    if (node === null || node === o1 || node === o2) {
+      return node
+    }
+    let left = this.closetsParent(node.leftChild, o1, o2)
+    let right = this.closetsParent(node.rightChild, o1, o2)
+    // 左右都找到的话代表在node的子层找到了，不管有多深代表我都找到了
+    if (left !== null && right !== null) {
+      return node
+    }
+    // 左右有一个为空的话表示该node下只找到了一个节点，或者干脆没有，回溯到上上层
+    // 同样的事情做层数次，每次node保存的都是父节点
+    return left != null ? left : right
+  }
 }
-let tree = new Tree('A(B(D,E(G)),C(,F))')
+let tree = new Tree('A(B(D,E(G,)),C(,F))')
 tree.pre_order(console.log)
 console.log('//////')
 tree.in_order(console.log)
 console.log('//////')
 tree.last_order(console.log)
 console.log(tree.size(),tree.getHeight())
+// tree.reverse(tree.node)
+console.log(tree.findNode(tree.node, 'N'),tree.in_order(console.log),tree.node)
+console.log(tree.closetsParent(tree.node, tree.findNode(tree.node, 'D'), tree.findNode(tree.node, 'F')))
+// 寻找两个节点的最近公共父节点
