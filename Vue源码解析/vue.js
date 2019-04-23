@@ -2768,6 +2768,7 @@
         var slot = (slots[name] || (slots[name] = []));
         if (child.tag === 'template') {
           // push.apply [].concat
+          // 为什么是children，是因为template算作一层，template下面才是真正的元素
           slot.push.apply(slot, child.children || []);
         } else {
           slot.push(child);
@@ -3070,6 +3071,7 @@
 
     // resolve slots + force update if has children
     if (hasChildren) {
+      // 处理slots
       vm.$slots = resolveSlots(renderChildren, parentVnode.context);
       vm.$forceUpdate();
     }
@@ -4836,8 +4838,13 @@
       var _parentVnode = ref._parentVnode;
 
       // reset _rendered flag on slots for duplicate slot check
-      // 存疑
-      // slots是一个存放实例中所有slot的对象，不具名slot存放在default里
+      // slots的内部结构
+      /**
+       * slots是一个对象，储存的是当前实例上的所有slot集合
+       * 默认slots的key是default，其他slot的key是具名
+       * 每一个key对应的是一个数组，储存的是相同名字的slot
+       * 考虑，具名slots会覆盖前面的slot，那为什么会是数组
+       */
       {
         for (var key in vm.$slots) {
           // $flow-disable-line
@@ -4847,6 +4854,7 @@
       }
 
       if (_parentVnode) {
+        // 作用域插槽，也就是带参数的插槽
         vm.$scopedSlots = _parentVnode.data.scopedSlots || emptyObject;
       }
 
