@@ -4183,7 +4183,6 @@
   ) {
     var cached = this._staticTrees || (this._staticTrees = []);
     var tree = cached[index];
-    // 厉害
     // 如果已经有一个静态树了，而且不再v-for里面我们就直接用它
     // if has already-rendered static tree and not inside v-for,
     // we can reuse the same tree.
