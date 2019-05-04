@@ -412,7 +412,7 @@ Store.prototype.commit = function commit (_type, _payload, _options) {
   if (
     "development" !== 'production' &&
     options && options.silent
-  ) {
+  ) {console.warn
     console.warn(
       "[vuex] mutation type: " + type + ". Silent option has been removed. " +
       'Use the filter functionality in the vue-devtools'
