@@ -31,6 +31,7 @@
 [解析Object.defineProperty和Proxy区别](https://github.com/atheist1/sundries/blob/master/%E9%9D%A2%E8%AF%95%E9%A2%98%E4%B8%80%E4%BA%9B/Object%26Proxy/object%26proxy.md)  
 [this指向详解](https://github.com/atheist1/sundries/tree/master/%E9%9D%A2%E8%AF%95%E9%A2%98%E4%B8%80%E4%BA%9B/this%E8%BF%9B%E9%98%B6)  
 [深度优先遍历与广度优先遍历](https://github.com/atheist1/sundries/tree/master/%E9%9D%A2%E8%AF%95%E9%A2%98%E4%B8%80%E4%BA%9B/%E6%A0%91%E7%9A%84%E9%81%8D%E5%8E%86)  
+[实现一个深继承](https://github.com/atheist1/sundries/blob/master/%E9%9D%A2%E8%AF%95%E9%A2%98%E4%B8%80%E4%BA%9B/copy/extend.js)
 ##### 关于函数
 [科里化函数](https://github.com/atheist1/sundries/tree/master/%E9%9D%A2%E8%AF%95%E9%A2%98%E4%B8%80%E4%BA%9B/%E7%A7%91%E9%87%8C%E5%8C%96)  
 [节流防抖](https://github.com/atheist1/sundries/tree/master/%E9%9D%A2%E8%AF%95%E9%A2%98%E4%B8%80%E4%BA%9B/%E8%8A%82%E6%B5%81%E4%B8%8E%E9%98%B2%E6%8A%96)  
