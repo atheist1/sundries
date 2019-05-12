@@ -28,22 +28,38 @@ let getFinger = (num) => {
         let returnVal = stack[index - 1];
         return returnVal;
     */
-   let currentStack = new Stack();
-   currentStack.push(5,4,3,2,1); // 4 3 2  1 2 3 4 5 
-   let store = new Stack;
-   store.push(4, 3, 2)
-   let count = 0;
-   while (count  != num ){
-        let pop = currentStack.pop();
-        store.push(pop);
-        if (currentStack.size() == 0) {
-            // 交换两个
-            let temp = store;
-            store = currentStack;
-            currentStack = temp;
+   /**
+    *   //解法2
+    *  let current = [5,4,3,2,1];
+        let store = [];
+        let temp;
+        let before;
+        for (let i = 0; i < num; i++){
+            let pop = current.pop();
+            store.push(pop);
+            if ( before !== store[store.length - 1]) {
+                before = store[store.length - 1];
+            } else {
+                num ++;
+            }
+            if (current.length === 0) {
+                temp = store;
+                store = current;
+                current = temp;
+            }
         }
-        count++;
-   }
-   console.log(currentStack)
+        return before;
+    */
+    let flag = 1;
+    let returnVal = 0;
+    for (let i = 0 ; i < num; i++) {
+        returnVal += flag;
+        if (returnVal === 1) {
+            flag = 1;
+        } else if (returnVal === 5) {
+            flag = -1;
+        }
+    }
+    return returnVal;
 }
-console.log(getFinger(5))
+console.log(getFinger(22))
