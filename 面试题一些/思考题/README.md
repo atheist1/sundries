@@ -24,3 +24,4 @@
       3  1 21
       5  8 13
 ```
+[答案点我](https://github.com/atheist1/sundries/blob/master/%E9%9D%A2%E8%AF%95%E9%A2%98%E4%B8%80%E4%BA%9B/%E6%80%9D%E8%80%83%E9%A2%98/20190513.js)
