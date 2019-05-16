@@ -142,7 +142,7 @@
                 tempc++;
                 break;
             }
-            if (emptyArr[tempr][tempc]) {
+            if (emptyArr[tempr][tempc]) { 
               direction = next;
             }
           }
