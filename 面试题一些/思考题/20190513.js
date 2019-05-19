@@ -1,98 +1,158 @@
-// 算法题
-// 一个人的手指从大拇指开始数，到小拇指倒过来数 1 2 3 4 5 6 ,请问第n个数后对应的手指是哪个
-let getFinger = (num) => {
-    /**
-        let stack = [1,2,3,4,5,4,3,2]; //[] 1 2 3 4 5 4 3 2 1 2 3 4 5 4 3 2 1 2 3 4 5 4 3 2 1 2
-        // 解法1 找规律
-        let index = num % 8;
-        let returnVal = stack[index - 1];
-        return returnVal;
-    */
-   /**
-    *   //解法2
-    *  let current = [5,4,3,2,1];
-        let store = [];
-        let temp;
-        let before;
-        for (let i = 0; i < num; i++){
-            let pop = current.pop();
-            store.push(pop);
-            if ( before !== store[store.length - 1]) {
-                before = store[store.length - 1];
-            } else {
-                num ++;
+      /**
+       * 按如下格式输出斐波那契数列，可选入参（行数，列数, 顺时针/逆时针).
+          例子：3 X 3 逆时针 输出如下：
+          154 89 55
+            2  1 34
+            3  1 21
+            5  8 13
+      */
+      const main = (row, col, flag) => {
+        const getFibArr = (num) => {
+          let len = 0;
+          const arr = [];
+          const fibs = (n, n1) => {
+            len++;
+            if (len > num) {
+              return;
             }
-            if (current.length === 0) {
-                temp = store;
-                store = current;
-                current = temp;
+            const next = n + n1;
+            n = n1;
+            arr.push(n);
+            return fibs(n, next);
+          }
+          fibs(0, 1);
+          return arr;
+        }
+        const getTwoDimensionArr = (row, col) => {
+          return new Array(row).fill('').map(item => new Array(col));
+        }
+        /**
+         * 
+         * @param {*} row 行
+         * @param {*} col 列
+         * @param {*} flag 顺时针逆时针
+         */
+        const fn = (row, col, flag) => {
+          // 行数比列数大1或等于行数
+          if (col > row || row > col + 2) {
+            console.error('该行列无法构成'); 
+            return;
+          }
+          console.log('start');
+          const firstDirection = 2; // 默认第一次往下
+          let direction = 2;
+          const arr = getFibArr(col * row);
+          const emptyArr = getTwoDimensionArr(row, col);
+          let startX = 0;
+          let startY = 0;
+          let len = 0;
+          let isEnd = false;
+          if (flag) {
+            direction = 8;
+            startX = Math.floor((row) / 2);
+            startY = Math.floor((col -  1) / 2);
+          } else {
+            startX = Math.floor((row - 1) / 2);
+            startY = Math.floor((col - 1) / 2);
+          }
+          for (let r = startX; r < row;) {
+            for (let c = startY; c < col;) {
+              emptyArr[r][c] = arr[len];
+              len++;
+              if (len >= col * row) isEnd = true; 
+              if (isEnd) break;
+              if (!flag) { // 逆时针旋转
+                switch (direction) {
+                  case 2:
+                    r += 1;
+                    break;
+                  case 4:
+                    c -= 1;
+                    break;
+                  case 6:
+                    c += 1;
+                    break;
+                  case 8:
+                    r -= 1;
+                    break;
+                  default:
+                    break;
+                }
+
+                // 判断是否需要转向
+                let next = direction;
+                let tempc = c;
+                let tempr = r;
+                switch (next) {
+                  case 4:
+                    direction = 2;
+                    tempr++;
+                    break;
+                  case 8:
+                    direction = 4;
+                    tempc--;
+                    break;
+                  case 6:
+                    direction = 8;
+                    tempr--;
+                    break;
+                  case 2:
+                    direction = 6;
+                    tempc++;
+                    break;
+                }
+                if (emptyArr[tempr][tempc]) {
+                  direction = next;
+                }
+              } else { // 顺时针
+
+                switch (direction) {
+                  case 2:
+                    r += 1;
+                    break;
+                  case 4:
+                    c -= 1;
+                    break;
+                  case 6:
+                    c += 1;
+                    break;
+                  case 8:
+                    r -= 1;
+                    break;
+                  default:
+                    break;
+                }
+
+                // 判断是否需要转向
+                let next = direction;
+                let tempc = c;
+                let tempr = r;
+                switch (next) {
+                  case 4:
+                    direction = 8;
+                    tempr--;
+                    break;
+                  case 8:
+                    direction = 6;
+                    tempc++;
+                    break;
+                  case 6:
+                    direction = 2;
+                    tempr++;
+                    break;
+                  case 2:
+                    direction = 4;
+                    tempc--;
+                    break;
+                }
+                if (emptyArr[tempr][tempc]) { 
+                  direction = next;
+                }
+              }
             }
+            if (isEnd) break;
+          }
+          return emptyArr;
         }
-        return before;
-    */
-    let flag = 1;
-    let returnVal = 0;
-    for (let i = 0 ; i < num; i++) {
-        returnVal += flag;
-        if (returnVal === 1) {
-            flag = 1;
-        } else if (returnVal === 5) {
-            flag = -1;
-        }
-    }
-    return returnVal;
-}
-console.log(getFinger(22));
-console.log(
-  '2019年05月09日题:从右手大拇指数数，从1开始，至小拇指后颠倒顺序至大拇指，至大拇指后颠倒顺序至小拇指，如下图：'
-);
-
-console.log(`      
-              --
-         --  |3 |
-        |4 | |7 |  --
-    --  |6 | |11| |2 |
-   |5 | |..| |  | |8 |
-   |  | |  | |  | |10|
-   |  | |  | |  | |  |  ---
-   |  | |  | |  | |  | | 1 |
-   |  | |  | |  | |  | | 9 |
-   |  | |  | |  | |  | |   |
-`);
-
-console.log('问：第1314个数在哪个手指?');
-
-function findFinger(times) {
-  const fingers = ['大拇指', '食指', '中指', '无名指', '小指'];
-  let idx = 0;
-  let sequence = true; // 顺序
-  let finger;
-  const len = times % 8 === 0 ? 8 : times % 8;
-  for (let t = 0; t < len; t += 1) {
-    // 标记当前数对应的指头
-    finger = fingers[idx];
-    // console.log('t', t + 1, idx, finger);
-    // 正序
-    if (sequence) {
-      idx += 1;
-      if (idx === 5) {
-        idx = 3;
-        sequence = false;
+        return fn(row, col, flag);
       }
-    } else {
-      // 反序
-      idx -= 1;
-      if (idx === 0) {
-        idx = 0;
-        sequence = true;
-      }
-    }
-  }
-  console.log(`第${times}个数对应的手指为：${finger}`);
-}
-
-function main() {
-  findFinger(1314);
-}
-
-main();
