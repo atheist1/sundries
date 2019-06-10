@@ -40,4 +40,4 @@
 来源：组内探讨  
 问题：实习数独的程序解法  
      最简单的唯余法
-[答案点我]
+[答案点我](https://github.com/atheist1/sundries/blob/master/%E9%9D%A2%E8%AF%95%E9%A2%98%E4%B8%80%E4%BA%9B/%E6%80%9D%E8%80%83%E9%A2%98/20190603.md)
