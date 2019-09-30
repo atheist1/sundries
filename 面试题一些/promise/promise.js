@@ -19,7 +19,6 @@ function Promise(fn) {
       })
     })
   }
-
   function resolve(newValue) {
     // 如果是外部调用的话，将会把resolve的数据传入，当然也不会走if语句，证明，异步处理已经完成了
 
@@ -44,6 +43,19 @@ function Promise(fn) {
       // 这里将会最后执行
     execute()
   }
+  /**
+   * 这里可以参照两个用法就一目了然
+   * var p = new Promise((resolved, reject) => {resolve = resolved});
+   * p.then(() => {console.log(1)}) 输出pending状态的promise
+   * p.then(() => {console.log(2)}) 输出pending状态的promise
+   * p.resolve() 输出1和2
+   * 
+   * 第二种
+   * var p = new Promise((resolved, reject) => {resolve = resolved});
+   * p.then(() => {console.log(1)}) 输出pending状态的promise
+   * p.resolve() 输出1
+   * p.then(() => {console.log(2)}) 输出resolve状态的promise并打印2
+   */
   // 注册下一个then的时候，将会触发handle方法
   function handle(cb) {
     // 这个state是上一个promise对象的state
@@ -60,8 +72,8 @@ function Promise(fn) {
       // 将上一个value传入了
       // then里面没有传递任何东西
     if (cb === null) {
-      cba = state === 'fullfilled' ? cb.resolve : cb.reject
-      cb(value)
+      cba = state === 'fullfilled' ? resolve : reject
+      cba(value)
       return
     }
     try {
