@@ -35,7 +35,7 @@ function myPromise(fn) {
       // then里面没有传递任何东西,以及下一个then为空
     if (cb === null) {
       cba = state === 'fullfilled' ? resolve : reject
-      cb(value)
+      cba(value)
       return
     }
     try {
