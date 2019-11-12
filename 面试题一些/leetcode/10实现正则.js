@@ -11,47 +11,6 @@
  * @param {string} p
  * @return {boolean}
  */
-var isMatch = function(s, p) {
-  var sArr = s.split('');
-  var pArr = p.split('');
-  let flag = true;
-  let prev;
-  for (let i = 0;  ; i += 1) {
-    if (sArr.length === 0 && pArr.length === 0) {
-      if (pArr.length !== 0) {
-        flag = false;
-      }
-      break;
-    }
-    if (sArr[i] === pArr[i]) {
-      i -= 1;
-      sArr.shift();
-      prev = pArr.shift();
-    } else if (pArr[i] === '.') {
-      if (sArr.length === 0) {
-        flag = false;
-        return flag;
-      }
-      if (prev === '*') {
-
-      }
-      i -= 1;
-      prev = sArr.shift();
-      pArr.shift();
-    } else if (pArr[i] === '*') {
-      if (prev !== sArr[i]) {
-        pArr.shift();
-      } else {
-        prev = sArr.shift();
-      }
-      i -= 1;
-    } else {
-      flag = false;
-      return false;
-    }
-  }
-  return flag;
-};
 var isMatch = function (s, p) {
   if (s === '' && p === '') {
     return true;
@@ -66,8 +25,8 @@ var isMatch = function (s, p) {
   let isStar = (p[1] === '*')
   if (isStar) {
     if (char && (reg === '.' || reg === char)) { // .*  char必须存在是为了匹配s为空时reg还剩下.或者.*的情况
-      // aaaaab a*b 第1种是每次匹配到一个a去除一个a
-      // aaaaab a*b 第2种是匹配到a a*a 去除a*直接匹配
+      // aaaaab a*b 第1种是S*匹配一个字符，然后递归匹配表示s*匹配多个s
+      // aaaaab a*b 第2种是s*匹配0个字符
       // aaaaab aaaa.b
       result = isMatch(s.slice(1), p) || isMatch(s, p.slice(2));
     } else {
@@ -82,4 +41,53 @@ var isMatch = function (s, p) {
     }
   }
   return result;
+}
+/** 动态规划 */
+var isMatch = function (s, p) {
+  // 初始化dp
+  var dp = new Array(s.length + 1).fill().map(item => []);
+  dp[0][0] = true;
+  // 状态转移方程
+  // for (let i = 0; i < s.length; i += 1) {
+  //   for (let j = 0; j < p.length; j += 1) {
+  //     // 1.s[i]===p[j] p[j] === '.' 点是通用符，直接向前一位
+  //     if (s[i] === p[j] || p[j] === '.') {
+  //       dp[i][j] = dp[i - 1][j - 1];
+  //     }
+  //     if (p[j] === '*') {
+  //       if (s[i] !== p[j - 1] && p[j - 1] !== '.') { // ab匹配abc* 当b与c不相等时且前一位不为.时，移除两位判断是否当前*代表0个
+  //         dp[i][j] = dp[i][j - 2];
+  //       } else {
+  //         // j为* s[i]与p[j - 1]相等 或者p[j - 1]是.
+  //         // 第一种情况p[j]为*，abbbbbb匹配ab* 当前是否匹配只需要查看s[i - 1]位置是否匹配 匹配多字符
+  //         // 第二种情况为p[j]为* p[j - 1]为. p向前挪动一位，查看是否匹配
+  //         // 第三种情况为p[j]为* p[j - 1]s[j]无所谓，因为这里的*代表0个匹配，直接向前匹配两位，如果三个一个满足则满足
+  //         dp[i][j] = d[i - 1][j] || dp[i][j - 1] || dp[i][j - 2];
+  //       }
+  //     }
+  //   }
+  // }
+  // s和p虽然是两个数组，但是0号位是不做操作的。下标从1开始当p[i] = *则当前i + 1位置是否能匹配跟i - 1位置一致 i号位代表是当前*
+  // 或者p[i - 1]位为*时，dp[i][j]与dp[i][j - 2]保持一致
+  for (let i = 0; i < p.length; i += 1) {
+    if (p[i] === '*' && dp[0][i - 1]) {
+      dp[0][i + 1] = true;
+    }
+  }
+  for (let i = 0; i < s.length; i += 1) {
+    for (let j = 0; j < p.length; j += 1) {
+      // 1.s[i]===p[j] p[j] === '.' 点是通用符，直接向前一位
+      if (s[i] === p[j] || p[j] === '.') {
+        dp[i + 1][j + 1] = dp[i][j];
+      }
+      if (p[j] === '*') {
+        if (s[i] !== p[j - 1] && p[j - 1] !== '.') { // ab匹配abc* 当b与c不相等时且前一位不为.时，移除两位判断是否当前*代表0个
+          dp[i + 1][j + 1] = dp[i + 1][j - 1];
+        } else {
+          dp[i + 1][j + 1] = (dp[i][j + 1] || dp[i + 1][j] || dp[i + 1][j - 1]);
+        }
+      }
+    }
+  }
+  return dp[s.length][p.length] || false;
 }
