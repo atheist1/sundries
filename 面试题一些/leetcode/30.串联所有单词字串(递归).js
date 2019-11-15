@@ -43,3 +43,75 @@ var findSubstring = function(s, words) {
   }
   return result;
 };
+/**
+ * foo bar ->2
+ * barfoothefoobarman
+ * bar match +1 右滑
+ * foo match +1 右滑
+ * 匹配数等于单词数 bar的出现次数与单词数一致 foo出现次数与bar一致 表示第一个匹配完成
+ * 加入res数组，一个成功
+ * 移动左指针 往右移动一个字符长度(并清空match与窗口夹住的单词)
+ * 左指针移动到右指针的位置 即the开始 继续右滑
+ * 
+ * foo match +1 右滑
+ * bar match +1 右滑
+ * 匹配 推入res数组 第二个成功
+ * 移动左指针
+ * 一直到数组最后一个单词长度 发现不匹配
+ * i++ 从arf开始继续移动窗口匹配，直到i结束
+ */
+// js滑动窗口
+var findSubstring = function(s, words) {
+  if (s.length === 0 || words.length === 0) {
+    return [];
+  }
+  let len = words[0].length;
+  var wordMap = new Map();
+  let left;
+  let right;
+  let winMap = new Map();
+  let result = [];
+  // 构建word的窗口
+  for (let idx = 0; idx < words.length; idx += 1) {
+    let temp = wordMap.get(words[idx])
+    if (temp) {
+      wordMap.set(words[idx], temp + 1);
+    } else {
+      wordMap.set(words[idx], 1);
+    }
+  }
+  for (let i = 0; i < s.length; i += 1) {
+    // 窗口开始位置
+    left = right = i;
+    let match = 0;
+    // 最后一个单词长度之前
+    while (right <= s.length - len) {
+      let s2 = s.substring(right, right + len);
+      let count = winMap.get(s2) || 0;
+      winMap.set(s2, count + 1);
+      if (winMap.get(s2) === wordMap.get(s2)) {
+        match += 1;
+      }
+      right += len;
+      // 移动左指针
+      while (left < right && match === wordMap.size) {
+        if ((right - left) / len === words.length) { // 左右间隔长度与单词数量一致
+          if (result.indexOf(left) === -1) {
+            result.push(left);
+          }
+          
+        }
+        let s3 = s.substring(left, left + len);
+        left += len;
+        let winTemp = winMap.get(s3) || 0;
+        winMap.set(s3, winTemp - 1);
+        // 如果窗口里面的选取元素个数比所需元素个数少，左指针左移停止，右移继续
+        if (winMap.get(s3) <= wordMap.get(s3)) {
+          match -= 1;
+        }
+      }
+    }
+    winMap.clear();
+  }
+  return result;
+};
