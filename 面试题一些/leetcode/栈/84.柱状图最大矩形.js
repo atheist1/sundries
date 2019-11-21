@@ -73,23 +73,22 @@ var largestRectangleArea = function(heights) {
   }
   return maxArea;
 };
-// 4.其他算法变种2 从左往右 第一个降序的组成的矩形
+// 4. 栈
 var largestRectangleArea = function(heights) {
   // 守卫边界条件
-  heights.push(-1);
-  heights.unshift(-1);
-  let rightIdx = heights.length;
+  heights.push(0);
+  // heights.unshift(0);
   let maxArea = 0;
+  let stack = [];
   // 找到i号位置的右边比他低的矩形位置，两个位置夹着的宽度乘i号位置的高度则是他的最大面积
-  for (let i = 0; i < heights.length; i += 1) {
-    rightIdx = heights.length;
-    for (let right = i + 1; right < heights.length; right += 1) {
-      if (heights[right] < heights[i]) {
-        rightIdx = right;
-        break;
-      }
+  for (let i = 0; i <= heights.length; i += 1) {
+    while(stack.length > 0 && heights[i] <= heights[stack[stack.length - 1]]) {
+      let top = stack.pop();
+      let top2 = stack[stack.length - 1];
+      maxArea = Math.max(maxArea, heights[top] * (stack.length === 0 ? i : i - top2 - 1))
     }
-    maxArea = Math.max(maxArea, (rightIdx - 1) * heights[i])
+    stack.push(i);
+   
   }
   return maxArea;
 };
