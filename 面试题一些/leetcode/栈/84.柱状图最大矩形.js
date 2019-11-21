@@ -43,3 +43,53 @@ var largestRectangleArea = function(heights) {
   };
   return findLarge(heights);
 };
+
+// 3. 其他解法
+var largestRectangleArea = function(heights) {
+  let leftIdx = 0;
+  // 守卫边界条件
+  heights.push(-1);
+  heights.unshift(-1);
+  let rightIdx = heights.length;
+  let maxArea = 0;
+  // 找到i号位置的最大矩形面积就是找到左边第一个i低的矩形的位置
+  // 找到i号位置的右边比他低的矩形位置，两个位置夹着的宽度乘i号位置的高度则是他的最大面积
+  for (let i = 0; i < heights.length; i += 1) {
+    leftIdx = 0;
+    rightIdx = heights.length;
+    for (let left = i - 1; left >= 0; left -= 1) {
+      if (heights[left] < heights[i]) {
+        leftIdx = left;
+        break;
+      }
+    }
+    for (let right = i + 1; right < heights.length; right += 1) {
+      if (heights[right] < heights[i]) {
+        rightIdx = right;
+        break;
+      }
+    }
+    maxArea = Math.max(maxArea, (rightIdx - leftIdx - 1) * heights[i])
+  }
+  return maxArea;
+};
+// 4.其他算法变种2 从左往右 第一个降序的组成的矩形
+var largestRectangleArea = function(heights) {
+  // 守卫边界条件
+  heights.push(-1);
+  heights.unshift(-1);
+  let rightIdx = heights.length;
+  let maxArea = 0;
+  // 找到i号位置的右边比他低的矩形位置，两个位置夹着的宽度乘i号位置的高度则是他的最大面积
+  for (let i = 0; i < heights.length; i += 1) {
+    rightIdx = heights.length;
+    for (let right = i + 1; right < heights.length; right += 1) {
+      if (heights[right] < heights[i]) {
+        rightIdx = right;
+        break;
+      }
+    }
+    maxArea = Math.max(maxArea, (rightIdx - 1) * heights[i])
+  }
+  return maxArea;
+};
