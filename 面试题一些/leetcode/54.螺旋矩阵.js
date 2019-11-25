@@ -1,35 +1,60 @@
-/**
- * 给定一个包含 m x n 个元素的矩阵（m 行, n 列），请按照顺时针螺旋顺序，返回矩阵中的所有元素。
- * 输入:
-    [
-    [ 1, 2, 3 ],
-    [ 4, 5, 6 ],
-    [ 7, 8, 9 ]
-    ]
-    输出: [1,2,3,6,9,8,7,4,5]
- */
-/**
- * @param {number[][]} matrix
- * @return {number[]}
- */
 var spiralOrder = function(matrix) {
-  const result = [];
+  let len = 0;
+  if (matrix.length === 0) {
+    return [];
+  }
+  matrix.forEach(item => len += item.length)
+  const result = [matrix[0][0]];
+  matrix[0][0] = 'flag';
   // 2486下左上右
   let direction = 6;
-  let prevDirection = 8;
   let row = 0;
   let col = 0;
   // 顺时针
-  while(1) {
+  while(len > result.length) {
     switch(direction) {
+      // 向右
       case 6:
-        row ++;
-        if (matrix[row]) {
-          
+        col ++;
+        if (matrix[row][col] !== undefined && matrix[row][col] !== 'flag') {
+          result.push(matrix[row][col]);
+          matrix[row][col] = 'flag';
         } else { // 不存在
-
+          col --;
+          direction = 2;
+        }
+      break;
+      case 2:
+        row ++;
+        if (matrix[row] && matrix[row][col] !== 'flag') {
+          result.push(matrix[row][col]);
+          matrix[row][col] = 'flag';
+        } else {
+          row --;
+          direction = 4;
+        }
+      break;
+      case 4:
+        col --;
+        if (matrix[row][col] !== undefined && matrix[row][col] !== 'flag') {
+          result.push(matrix[row][col]);
+          matrix[row][col] = 'flag';
+        } else { // 不存在
+          col ++;
+          direction = 8;
+        }
+      break;
+      case 8:
+        row --;
+        if (matrix[row] && matrix[row][col] !== 'flag') {
+          result.push(matrix[row][col]);
+          matrix[row][col] = 'flag';
+        } else { // 不存在
+          row ++;
+          direction = 6;
         }
         break;
     }
   }
+  return result;
 };
