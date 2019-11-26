@@ -16,8 +16,8 @@ class Tree {
     // 思路 根据下一层元素构建上一层元素的左右节点 根据索引位置找到上一层位置
     for (let i = 0; i < arr.length; i += 1) {
       nodeList.push(new TreeNode(arr[i]));
-      if(i > 0) {
-        // 当前节点所在哪一层  
+      if (i > 0) {
+        // 当前节点所在哪一层
         let q = Math.floor(Math.log2(i + 1));
         // 当前层的元素个数
         let n = Math.pow(2, q);
@@ -44,20 +44,45 @@ class Tree {
 // 左边的左子树和右边的右子树是否相等 与上右边的左子树与左边的右子树是否相等 只有一个为空返回false
 var isSymmetric = function(root) {
   if (root === null) {
+    return true;
+  }
+  var isTree = function(left, right) {
+    if (left === null && right === null) {
       return true;
-  }
-  var isTree = function (left, right) {
-      if (left === null && right === null) {
-          return true;
-      }
-      if (left === null || right === null) {
-          return false;
-      }
-      if (right.val === left.val) {
-          return isTree(left.left, right.right) && isTree(left.right, right.left);
-      } else {
-          return false;
-      }
-  }
+    }
+    if (left === null || right === null) {
+      return false;
+    }
+    if (right.val === left.val) {
+      return isTree(left.left, right.right) && isTree(left.right, right.left);
+    } else {
+      return false;
+    }
+  };
   return isTree(root.left, root.right);
 };
+
+var isValidBST = function(root) {
+  if (!root) {
+    return true;
+  }
+  let result = true;
+  let arr = [];
+  var isValid = function (root) {
+    if (root === null || !result) {
+      return;
+    }
+    isValid(root.left);
+    if (arr[arr.length - 1] >= root.val) {
+      result = false;
+      return;
+    }
+    arr.push(root.val);
+    isValid(root.right);
+  }
+  isValid(root);
+  arr = arr.filter(item => !!item);
+  return result;
+};
+let tree = new Tree([2,1,3])
+
