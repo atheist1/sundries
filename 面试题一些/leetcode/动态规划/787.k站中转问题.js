@@ -38,3 +38,26 @@ var findCheapestPrice = function(n, flights, src, dst, K) {
   let result = cheap(src, dst, K)
   return result > Number.MAX_SAFE_INTEGER ? -1 : result;
 };
+
+
+// 2. 动态规划数组算法
+var findCheapestPrice = function(n, flights, src, dst, K) {
+  // 状态转移方程
+  // dp表示从src到位置i最多经过k站所需要的最小费用
+  let dp = new Array(n).fill('').map(() => new Array(K + 2).fill(Number.MAX_SAFE_INTEGER));
+  for (let i = 0; i <= K + 1; i += 1) {
+    // 从src到src不管多少站都是0元
+    dp[src][i] = 0;
+  }
+  for (let k = 1; k <= K + 1; k += 1) {
+    for (let j = 0;j < flights.length; j +=1) {
+      let flight = flights[j];
+      let _src = flight[0];
+      let _dst = flight[1];
+      let tempPrice = flight[2];
+      // k站达到_dst所需要的最少价格是K-1站到达_src所需的最小价格加上当前的价格与src直接到_dst不中转的价格的最小值
+      dp[_dst][k] = Math.min.apply(null, [dp[_src][k - 1] + tempPrice, dp[_dst][k]])
+    }
+  }
+  return dp[dst][K + 1] >= Number.MAX_SAFE_INTEGER ? -1 : dp[dst][K + 1];
+};
