@@ -72,9 +72,19 @@ var isValidBST = function(root) {
     return true;
   }
   let result = true;
-  let arr = [root.val];
-  while(arr.length > 0) {
-    
+  let arr = [root];
+  let current = root;
+  let prev = Number.MIN_VALUE;
+  while(current || arr.length) {
+    while(current = current.left) {
+      arr.push(current);
+    }
+    current = arr.pop();
+    if (current.right < prev) {
+      return false;
+    }
+    prev = current.val;
+    current = current.right;
   }
   return result;
 };
