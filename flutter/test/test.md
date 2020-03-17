@@ -18,7 +18,7 @@ find用于查找组件，通常有
 4. `find.widgetWithText` 
 5. `find.widgetWithIcon`
 6. `find.descendant`(通过子类查找)
-   这个查找拥有多个参数,of,match 代表找到的元素是of参数的祖先，且满足matching的结果.of和match传入的均为finder类型对象
+   这个查找拥有多个参数,of,match 找到of参数的后代的match节点，of是更高的类
 ### excpet
 断言语句 用于判断是否正确，不正确将会被提示错误。
 ### tester group
