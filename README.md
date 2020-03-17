@@ -20,14 +20,16 @@
 [简单实现一个Vue](https://github.com/atheist1/sundries/blob/master/Vue%E6%BA%90%E7%A0%81%E8%A7%A3%E6%9E%90/myVue.js)  
 [Vuex源码注释版](https://github.com/atheist1/sundries/blob/master/Vue%E6%BA%90%E7%A0%81%E8%A7%A3%E6%9E%90/vuex.js)  
 [Vue-router注释版](https://github.com/atheist1/sundries/blob/master/Vue%E6%BA%90%E7%A0%81%E8%A7%A3%E6%9E%90/vue-router.js)  
-5. [工具类](https://github.com/atheist1/sundries/tree/master/%E5%B7%A5%E5%85%B7)  
+5. [flutter](https://github.com/atheist1/sundries/tree/master/flutter) 
+  这里是flutter相关内容，后续将补充。
+6. [工具类](https://github.com/atheist1/sundries/tree/master/%E5%B7%A5%E5%85%B7)  
 这里整理的是日常可能会用到的一些工具类js，做一个简单收录，节省日常开发时间。  
 [根据正则生成不同时间格式](https://github.com/atheist1/sundries/blob/master/%E5%B7%A5%E5%85%B7/format.js)  
-6. [思维导图](https://github.com/atheist1/sundries/tree/master/%E6%80%9D%E7%BB%B4%E5%AF%BC%E5%9B%BE)  
+7. [思维导图](https://github.com/atheist1/sundries/tree/master/%E6%80%9D%E7%BB%B4%E5%AF%BC%E5%9B%BE)  
 这里整理的是对一些代码的思维导图整理，主要用的工具是亿图  
-7. [面试题整理](https://github.com/atheist1/sundries/tree/master/%E9%9D%A2%E8%AF%95%E9%A2%98%E4%B8%80%E4%BA%9B)  
+8. [面试题整理](https://github.com/atheist1/sundries/tree/master/%E9%9D%A2%E8%AF%95%E9%A2%98%E4%B8%80%E4%BA%9B)  
 每周固定一道思考题，难度适中，[直达链接](https://github.com/atheist1/sundries/blob/master/%E9%9D%A2%E8%AF%95%E9%A2%98%E4%B8%80%E4%BA%9B/%E6%80%9D%E8%80%83%E9%A2%98/README.md)
-8. [数据结构相关储备](https://github.com/atheist1/sundries/tree/master/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84)
+9. [数据结构相关储备](https://github.com/atheist1/sundries/tree/master/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84)
 ##### 关于对象  
 [实现一个深拷贝](https://github.com/atheist1/sundries/tree/master/%E9%9D%A2%E8%AF%95%E9%A2%98%E4%B8%80%E4%BA%9B/copy)  
 [实现一个new](https://github.com/atheist1/sundries/tree/master/%E9%9D%A2%E8%AF%95%E9%A2%98%E4%B8%80%E4%BA%9B/new)  
