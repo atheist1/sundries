@@ -105,6 +105,7 @@ function widthCopy(data) {
         } else {
           // 下面两种写法有什么区别？
           _obj[item] = visitedCopyQueue[index]
+          // 使用下面的即又把原指向指向进去了，相当于浅拷贝
             // _obj[item] = visitedQueue[index]
         }
       } else if (isTypeOf(items[item], 'array')) {

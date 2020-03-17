@@ -32,7 +32,7 @@ function deepCopyBFS(origin) {
       }
 
       tar[key] = getEmpty(ori[key]);
-      if (tar[key] !== ori[key]) {
+      if (tar[key] !== ori[key]) { // 数组和对象走这里
         queue.push([ori[key], tar[key]]);
         map.set(ori[key], tar[key]);
       }
