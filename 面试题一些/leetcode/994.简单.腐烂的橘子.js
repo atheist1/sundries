@@ -25,5 +25,9 @@
  * @return {number}
  */
 var orangesRotting = function(grid) {
-
+  for (let row = 0; row < grid.length; row += 1) {
+    for(let col = 0; col < grid[row].length; col += 1) {
+     
+    }
+  }
 };
