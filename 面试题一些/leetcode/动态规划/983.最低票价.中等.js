@@ -50,6 +50,7 @@ var mincostTickets = function(days, costs) {
   }
   for (let i = 0; i <= last; i += 1) {
     if (dp[i]) {
+      // 没有足够天数的时候可以用足够天数的价格补齐，比如前六天的价格总和比直接买一个七天的通行证还多
       let _p1 = (dp[i - 1] || 0) + p1;
       let _p7 = dp[i - 7 < 0 ? 0 : i - 7] + p7;
       let _p30 = dp[i - 30 < 0 ? 0 : i - 30] + p30;

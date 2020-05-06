@@ -73,6 +73,8 @@ var uniquePathsWithObstacles = function(obstacleGrid) {
   // 初始化行数据
   for (let i = 1; i < m; i += 1) {
     // 当前行数据为0且上一行的状态是1
+    // 当前行数据为1代表没有任何方法到达则置为可到达数为0
+    // 当前行的前一行为0代表当前行也无法到达
     dp[i][0] = (obstacleGrid[i][0] === 0 && dp[i - 1][0] === 1) ? 1 : 0;
   }
   // 初始化列数据
