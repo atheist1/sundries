@@ -55,7 +55,7 @@ var lengthOfLongestSubstring = function(s) {
       // 将start滑动到最后一个相同字母的位置，保证该字符串内没有相同的字母
       // 这里必须加max 比如abba或者abaab 我第二次碰到重复时start位置已经靠右了而重复的位置是在start左边
       start = Math.max(map.get(char), start);
-      // map里记录的是字母出现的最后一个位置，不能clear
+      // map里记录的是单个字母出现的最后一次位置+1，当再次出现时将窗口滑动到上一次出现的位置+1，当然要判断start的位置是否已经大于上次出现的位置了，防止窗口回滑
       // abcabcba 先找到a、b、c然后a重复滑到b位置，如果此时clear掉了，后面map中就不存在重复元素了
       // map.clear();
     }
