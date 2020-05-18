@@ -6,7 +6,7 @@
 // 暴力解法双重循环
 // dp算法 dp表示当前以当前下标之前的所有子数组的最大和
 var maxSubArray = function (nums) {
-  let dp = [0];
+  let dp = [0]; 
   let max = nums[0];
   for (let i = 0; i < nums.length; i += 1) {
     dp[i + 1] = Math.max(dp[i] + nums[i], nums[i]);
