@@ -26,22 +26,17 @@
  * 解法1 用两次循环 第一次循环记录该数左边的乘积 第二次循环记录右边的乘积 第三次循环将两个乘积相乘
  */
 var productExceptSelf = function(nums) {
-  let left = [];
-  let right = [];
   let leftTemp = 1;
   let rightTemp = 1;
   let rlt = [];
   for (let i = 0; i < nums.length; i += 1) {
     leftTemp *= nums[i - 1] == undefined ?  1 : nums[i - 1];
-    left.push(leftTemp)
+    rlt.push(leftTemp)
   }
   for (let i = nums.length - 1; i >= 0; i -= 1) {
     rightTemp *= nums[i + 1] == undefined ?  1 : nums[i + 1];
-    right.unshift(rightTemp);
-  }
-  for (let i = 0; i < left.length; i += 1) {
-    rlt.push(left[i] * right[i])
+    rlt[i] *= rightTemp;
   }
   return rlt;
 };
-console.log(productExceptSelf([0,1,2,3,4,5]))
+console.log(productExceptSelf([1,2,3,4]))
