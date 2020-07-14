@@ -148,3 +148,23 @@ var findKthLargest = function(nums, k) {
     }
   }
 };
+var findKthLargest = function(nums, k) {
+  var rlt = [];
+  for (let i = 0; i < nums.length; i+= 1) {
+    if (rlt[nums[i]] == undefined) {
+      rlt[nums[i]] = 1;
+    } else {
+      rlt[nums[i]] += 1;
+    }
+  }
+  console.log(rlt)
+  for (let i = rlt.length; i >=0; i -= 1) {
+    if (rlt[i] != undefined) {
+      k -= rlt[i];
+    }
+    if (k <= 0)
+      return i
+  }
+  return -1;
+};
+console.log(findKthLargest([3,2,3,1,2,4,5,5,6], 4))
