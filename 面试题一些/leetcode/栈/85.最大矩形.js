@@ -41,7 +41,7 @@ var maximalRectangle = function(matrix) {
       } else {
         if (matrix[i][j] == 0) {
           end = j - 1;
-        } else {
+        } else { // 列超出了
           end = matrix[i].length - 1;
         }
         width = end - start;
