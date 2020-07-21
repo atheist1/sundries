@@ -49,3 +49,26 @@ var getOne = (number) => {
   return count;
 }
 console.log(getOne(100))
+
+function minNumberInRotateArray(rotateArray)
+{
+    if(rotateArray.length === 0) return 0;
+    let left = 0;
+    let right = rotateArray.length - 1;
+    while (left <= right) {
+      // 456123 561234 123456
+      let mid = parseInt((left + right) / 2);
+      if (rotateArray[left] < rotateArray[right]) { // 左边的小于右边的代表完全递增数组
+        return rotateArray[left];
+      } else if (rotateArray[mid] > rotateArray[right]){ // 中间的大于最右边 代表中间往右出现拐点 将左边的位置移到mid + 1
+        left = mid + 1;
+      } else if (rotateArray[left] < rotateArray[mid]) { // 中间的比右边的小且中间的比左边的大代表右边并没有出现递减的拐点 拐点出现在左边
+        right = mid;
+      } else {
+        right --
+      }
+     
+    }
+    return rotateArray[left];
+}
+console.log(minNumberInRotateArray([9,8,7,6,1,2,3,4,5]))

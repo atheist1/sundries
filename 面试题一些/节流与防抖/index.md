@@ -13,6 +13,7 @@ window.onscroll  = function () {
 上述事件在浏览器的表现形式很简单，每当你滚动一次滚动条他将会不断地打印滚动条的位置信息，但是如果我们想让他不断滚动却只执行一次，只有停止滚动一段时间后第二次滚动才会触发第二次，这样就引申出来了函数去抖。函数去抖精髓在于以下几点。  
 1. 一段时间只执行函数一次
 2. 上一个时间间隔还没结束如果触发了函数则抛弃上一次的执行，重新计时
+总结来说就是只执行第一次和最后一次 中间的不执行
 
 第一版
 ```javascript
@@ -22,9 +23,8 @@ let debounce = (fn, delay) => {
     if (timer) {
       clearTimeout(timer)
       timer = null
-    } else {
-      timer = setTimeout(fn,delay)
     }
+    timer = setTimeout(fn,delay)
   }
 }
 ```
@@ -41,11 +41,10 @@ let debounce = (fn, delay) => {
     if (timer) {
       clearTimeout(timer)
       timer = null
-    } else {
-      timer = setTimeout(function() {
-        result = fn.apply(context, args)
-      },delay)
-    }
+    } 
+    timer = setTimeout(function() {
+      result = fn.apply(context, args)
+    },delay)
     return result
   }
 }
