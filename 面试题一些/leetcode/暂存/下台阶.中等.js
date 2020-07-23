@@ -14,10 +14,10 @@ var stairs = function (matrix) {
         x += 1;
         // 如果发现不满足条件
         if (!matrix[x] || matrix[x][y] !== 1) {
-          return -1;
+          return 0;
         }
       }
-      return dfs(origin,x, y, size, 'right');
+      return dfs(origin,x, y, size, 'right') + 1;
     } else if (direction === 'right') { // 向右走size次
       // 注意 只有以该位置开始向右走才是以此节点为起点
       origin[x][y] = 0
@@ -27,7 +27,7 @@ var stairs = function (matrix) {
           return -1;
         }
       }
-      return dfs(origin, x, y, size, 'down') + 1;
+      return dfs(origin, x, y, size, 'down');
     }
   }
   
@@ -60,7 +60,9 @@ var stairs = function (matrix) {
 let test = [
   [0, 1, 1, 0, 0],
   [0, 0, 1, 1, 0],
-  [0, 0, 0, 1, 1]
+  [0, 0, 0, 1, 1],
+  [0, 0, 0, 0, 0],
+  [0, 0, 0, 0, 0]
 ];
 test = [
   [1,1,0,1,1,1,1],
