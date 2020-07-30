@@ -1,10 +1,12 @@
 /**
  * 给定一个二维数组作为神经系统，其中0代表通路,1代表不通，请问从数组arr[0][0]开始 能够连接的所有节点为多长
  */
-var data = [[0, 0, 1, 1],
-            [0, 0, 1, 1],
-            [0, 1, 1, 0],
-            [1, 1, 1, 0]];
+// var data = [[1, 1, 1, 1],
+//             [1, 0, 1, 1],
+//             [0, 1, 0, 0],
+//             [1, 1, 1, 0]];
+var data = [[1,1],
+            [1,0]];
 var ans = function (matrix) {
   let tag = matrix[0][0];
   let col = matrix.length;
@@ -39,4 +41,36 @@ var ans = function (matrix) {
   }
   return dfs(0,0)
 }
-console.log(ans(data))
+// ans2找到与相邻节点不同的点的最大连接点
+var ans2 = function (matrix) {
+  let tag = matrix[0][0];
+  let col = matrix.length;
+  let row = matrix[0].length;
+  let count = 0;
+  let dfs = function (i, j, prev) {
+    // 越界跳出
+    if (i >= col || j >= row || i < 0 || j < 0 || prev == -1) return;
+    
+    let current = matrix[i][j]
+    if (matrix[i] && matrix[i][j] != -1 && matrix[i][j] ^ prev == 1) { // 如果当前节点为第一个值则当前的计数为1
+      // 将已经访问过的点取消 防止重复访问
+      matrix[i][j] = -1;
+      count += 1;
+    } else {
+      return;
+    }
+    // 往上找
+    dfs(i - 1, j, current)
+    // 往下找
+    dfs(i + 1, j, current);
+    // 往左找
+    dfs(i, j - 1, current)
+    // 往右找
+    dfs(i, j + 1, current);
+    return;
+  }
+  dfs(1,1, 1)
+  console.log(count)
+  return
+}
+console.log(ans2(data))

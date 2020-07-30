@@ -76,6 +76,8 @@ function Promise(fn) {
       cba(value)
       return
     }
+    // executed => handler() => handler中间 改变了当前的cb指向的state => 下一个handler传入当前已经改变的value => resolve()继续循环
+    // 如果中途没有resolve一个promise对象的话，这个promise的状态不会被改变
     try {
       ret = cba(value)
         // 并且执行下一个promise的resolve方法 并且传入了上一次的参数
@@ -92,7 +94,6 @@ function Promise(fn) {
     value = reason
     execute()
   }
-
   function execute() {
     // macrotask推入任务栈
     setTimeout(function() {
