@@ -4,7 +4,7 @@
  * @Author: qitianle
  * @Date: 2020-08-04 09:40:20
  * @LastEditors: qitianle
- * @LastEditTime: 2020-08-04 09:55:40
+ * @LastEditTime: 2020-08-04 10:06:06
  */
 /**
  * 剑指 Offer 38. 字符串的排列
@@ -27,11 +27,37 @@
   1 <= s 的长度 <= 8
  */
 // 这是一道全排列的变式题 最容易想到的办法是暴力解法再去重 但是这样时间复杂度比较高
+var permutation = function (s) {
+  
+  let timeStart = new Date().getTime()
+  let rlt = [];
+  let arr = s.split('');
+  let dfs = function (k, str) {
+    if (k <= 0) {
+      if (rlt.indexOf(str) < 0) {
+        rlt.push(str)
+      }
+      return;
+    };
+    for (let i = 0; i < arr.length; i += 1) {
+      let temp = s[i];
+      if (arr[i] != -1) {
+        arr[i] = -1;
+        dfs(k - 1, str + temp)
+        arr[i] = temp;
+      }
+    }
+  }
+  dfs(s.length, '')
+  console.log(new Date().getTime() - timeStart);
+  return rlt
+};
 /**
  * @param {string} s
  * @return {string[]}
  */
 var permutation = function (s) {
+  let timeStart = new Date().getTime()
   let rlt = [];
   let arr = s.split('');
   let dfs = function (k, str) {
@@ -52,6 +78,7 @@ var permutation = function (s) {
     }
   }
   dfs(s.length, '')
+  console.log(new Date().getTime() - timeStart);
   return rlt
 };
 /**
@@ -87,4 +114,4 @@ var permutation = function (s) {
 //   dfs(0)
 //   return rlt
 // };
-console.log(permutation('aab'))
+permutation('abccbaabc')
