@@ -234,3 +234,27 @@ let fn = function () {
   console.log(this.a);
 }
 let f = fn._bind(obj);
+var f = function (fn) {
+  let timer;
+  return function (args) {
+    if (timer == null) {
+      timer = setTimeout(() => {
+        fn();
+        clearTimeout(timer)
+        timer = null;
+      }, delay)
+    } else {
+      clearTimeout(timer);
+      setTimeout(() => {
+        fn();
+        clearTimeout(timer)
+        timer = null;
+      }, delay)
+    }
+  }
+}
+Promise
+var fun = f(fn);
+function test(a, b,) {
+  fun()
+};

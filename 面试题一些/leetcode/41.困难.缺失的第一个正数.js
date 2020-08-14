@@ -1,5 +1,24 @@
-/**
- * 给定一个未排序的整数数组，找出其中没有出现的最小的正整数。
+/***
+ * 给你一个未排序的整数数组，请你找出其中没有出现的最小的正整数。
+
+ 
+
+示例 1:
+
+输入: [1,2,0]
+输出: 3
+示例 2:
+
+输入: [3,4,-1,1]
+输出: 2
+示例 3:
+
+输入: [7,8,9,11,12]
+输出: 1
+你的算法的时间复杂度应为O(n)，并且只能使用常数级别的额外空间。
+来源：力扣（LeetCode）
+链接：https://leetcode-cn.com/problems/first-missing-positive
+著作权归领扣网络所有。商业转载请联系官方授权，非商业转载请注明出处。
  */
 /**
  * @param {number[]} nums
@@ -112,3 +131,24 @@ var firstMissingPositive = function (nums) {
   // 已经是满足条件的顺序串了 直接长度加1
   return n + 1;
 };
+var firstMissingPositive = function (nums) {
+  let max = Number.MIN_VALUE;
+  let min = Number.MAX_SAFE_INTEGER;
+  let sum = 0;
+  for (let i = 0; i < nums.length; i += 1) {
+    if (nums[i] >= 0) {
+      sum += nums[i];
+      min = Math.min(min, nums[i]);
+      max = Math.max(max, nums[i]);
+    }
+  }
+  for (let i = min; i <= max; i += 1) {
+    sum -= i;
+  }
+  if (min == Number.MAX_SAFE_INTEGER)return 0
+  if (min < 0) return 0;
+  if (min > 1) return 1;
+  if (sum == 0) return max + 1;
+  if (sum < 0) return Math.abs(sum);
+};
+console.log(firstMissingPositive( [2147483647,2147483646,2147483645,3,2,1,-1,0,-2147483648]))
