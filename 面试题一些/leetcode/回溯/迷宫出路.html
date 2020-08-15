@@ -1,0 +1,213 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+      
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0">
+      
+    <meta charset="UTF-8">
+      <title>01_随机迷宫算法</title>
+      <style>
+        #canvas {
+            border: 1px solid lightgray;
+        }
+
+        .rebuild,.getAns {
+            width: 160px;
+            height: 40px;
+            line-height: 40px;
+            text-align: center;
+            background-color: #000000;
+            color: #fff;
+            font-size: 24px;
+            margin-bottom: 20px;
+            cursor: pointer;
+        }
+    </style>
+</head>
+
+<body>
+    <div>黄色为起点，红色为终点</div>
+    <div class="rebuild">随机迷宫</div>
+    <div class="getAns">获取路径</div>
+    <canvas id="canvas"></canvas>
+</body>
+<script>
+
+    var matrix;
+
+    var w = 40;
+
+    window.onload = function () {
+        var canvas = document.querySelector('#canvas'),
+            ctx = canvas.getContext('2d');
+        // 请从计算出起点到重点的可行路线 并且标记出来 色块颜色 路径为绿
+        function knowWay() {
+            console.log('matrix', matrix)
+            console.log('开始识路');
+            let row = matrix.length;
+            let col = matrix[0].length;
+            let dfs = function (arr, i, j) {
+                if (i >= row || j >= col || i < 0 || j < 0) return false;
+                if (arr[i][j] == 'o') return true;
+                if (arr[i][j] == 1 || arr[i][j] == 2) return false
+                let temp = arr[i][j];
+                arr[i][j] = 2
+                let rlt = false;
+                // 上
+                rlt = rlt || dfs(arr, i - 1, j)
+                // 下
+                rlt = rlt || dfs(arr, i + 1, j)
+                // 左
+                rlt = rlt || dfs(arr, i, j - 1)
+                // 右
+                rlt = rlt || dfs(arr, i, j + 1)
+                rlt || (arr[i][j] = temp)
+                return rlt;
+            }
+            console.log(dfs(matrix, 1, 0))
+        }
+        canvas.width = 920;
+        canvas.height = 920;
+        function rd(min, max) {
+            max = max || 0;
+            min = min || 0;
+            var step = Math.abs(max - min);
+            var st = (arguments.length < 2) ? 0 : min;
+            var result;
+            result = st + (Math.ceil(Math.random() * step)) - 1;
+            return result;
+        }
+        function maze(r, c) {
+            function init(r, c) {
+                var a = new Array(2 * r + 1);
+                for (let i = 0, len = a.length; i < len; i++) {
+                    var cols = 2 * c + 1;
+                    a[i] = new Array(cols);
+                    for (let j = 0, len1 = a[i].length; j < len1; j++) {
+                        a[i][j] = 1;
+                    }
+                }
+                for (let i = 0; i < r; i++)
+                    for (let j = 0; j < c; j++) {
+                        a[2 * i + 1][2 * j + 1] = 0;
+                    }
+                return a;
+            }
+            function process(arr) {
+                var acc = [], noacc = [];
+                var r = arr.length >> 1, c = arr[0].length >> 1;
+                var count = r * c;
+                for (var i = 0; i < count; i++) {
+                    noacc[i] = 0;
+                }
+                var offs = [-c, c, -1, 1], offR = [-1, 1, 0, 0], offC = [0, 0, -1, 1];
+                var pos = rd(count);
+                noacc[pos] = 1;
+                acc.push(pos);
+                while (acc.length < count) {
+                    var ls = -1, offPos = -1;
+                    offPos = -1;
+                    var pr = pos / c | 0, pc = pos % c, co = 0, o = 0;
+                    while (++co < 5) {
+                        o = rd(0, 5);
+                        ls = offs[o] + pos;
+                        var tpr = pr + offR[o];
+                        var tpc = pc + offC[o];
+                        if (tpr >= 0 && tpc >= 0 && tpr <= r - 1 && tpc <= c - 1 && noacc[ls] == 0) {
+                            offPos = o;
+                            break;
+                        }
+                    }
+                    if (offPos < 0) {
+                        pos = acc[rd(acc.length)];
+                    }
+                    else {
+                        pr = 2 * pr + 1;
+                        pc = 2 * pc + 1;
+                        //相邻空单元中间的位置置0
+                        arr[pr + offR[offPos]][pc + offC[offPos]] = 0;
+                        pos = ls;
+                        noacc[pos] = 1;
+                        acc.push(pos);
+                    }
+                }
+            }
+            matrix = init(r, c);
+            process(matrix);
+
+            return matrix;
+        }
+
+        function draw(context, color, stepx, stepy) {
+            context.strokeStyle = color;
+            context.lineWidth = 0.5;
+            for (var i = stepx + 0.5; i < context.canvas.width; i += stepx) {
+                context.beginPath();
+                context.moveTo(i, 0);
+                context.lineTo(i, context.canvas.height);
+                context.stroke();
+            }
+            for (var i = stepy + 0.5; i < context.canvas.height; i += stepy) {
+                context.beginPath();
+                context.moveTo(0, i);
+                context.lineTo(context.canvas.width, i);
+                context.stroke();
+            }
+        }
+        function drawRect(x, y, r, c) {
+            ctx.beginPath();
+            ctx.fillStyle = c;
+            ctx.rect(y, x, r, r);
+            ctx.fill();
+        }
+        function update(isUpdate) {
+            ctx.clearRect(0, 0, 920, 920);
+            draw(ctx, 'lightgray', w, w);
+            if (isUpdate) {
+                for (var i = 0, len = matrix.length; i < len; i++) {
+                    for (var j = 0, len1 = matrix[i].length; j < len1; j++) {
+                        if (matrix[i][j]) {
+                            drawRect(i * w, j * w, w, "black");
+                        }
+                        if (matrix[i][j] == 2) {
+                            drawRect(i * w, j * w, w, "green");
+                        }
+                    }
+                }
+            } else {
+                var mapArr = maze(11, 11);
+                //根据地图二维数组创建色块
+                for (var i = 0, len = mapArr.length; i < len; i++) {
+                    for (var j = 0, len1 = mapArr[i].length; j < len1; j++) {
+                        if (mapArr[i][j]) {
+                            drawRect(i * w, j * w, w, "black");
+                        }
+                    }
+                }
+            }
+
+            drawRect(w * 1, 0, w, 'yellow');
+            drawRect(w * 22, w * 21, w, 'red');
+            matrix[1][0] = 'e';
+            matrix[22][21] = 'o';
+        }
+
+        update();
+        knowWay();
+        document.querySelector('.rebuild').addEventListener('click', () => {
+            update()
+        });
+        document.querySelector('.getAns').addEventListener('click', () => {
+            knowWay();
+            update(true)
+        });
+    };
+</script>
+
+<script>
+
+
+</script>
+
+</html>
