@@ -42,30 +42,47 @@
         var canvas = document.querySelector('#canvas'),
             ctx = canvas.getContext('2d');
         // 请从计算出起点到重点的可行路线 并且标记出来 色块颜色 路径为绿
-        function knowWay() {
+        async function knowWay() {
             console.log('matrix', matrix)
             console.log('开始识路');
             let row = matrix.length;
             let col = matrix[0].length;
-            let dfs = function (arr, i, j) {
+            let index = 0;
+            let dfs = async function (arr, i, j) {
                 if (i >= row || j >= col || i < 0 || j < 0) return false;
                 if (arr[i][j] == 'o') return true;
                 if (arr[i][j] == 1 || arr[i][j] == 2) return false
                 let temp = arr[i][j];
+                await new Promise((resolve, reject) => {
+                    setTimeout(() => {
+                        resolve()
+                        drawRect(i * w, j * w, w, "green");
+                    }, 50)
+                });
                 arr[i][j] = 2
                 let rlt = false;
-                // 上
-                rlt = rlt || dfs(arr, i - 1, j)
-                // 下
-                rlt = rlt || dfs(arr, i + 1, j)
-                // 左
-                rlt = rlt || dfs(arr, i, j - 1)
+                index += 1;
                 // 右
-                rlt = rlt || dfs(arr, i, j + 1)
+                rlt = rlt || await dfs(arr, i, j + 1)
+                // 下
+                rlt = rlt || await dfs(arr, i + 1, j)
+                // 上
+                rlt = rlt || await dfs(arr, i - 1, j)
+                // 左
+                rlt = rlt || await dfs(arr, i, j - 1)
+                if (!rlt) {
+                    await new Promise((resolve, reject) => {
+                        setTimeout(() => {
+                            resolve()
+                            drawRect(i * w, j * w, w, "red");
+                        }, 50)
+                    });
+                }
                 rlt || (arr[i][j] = temp)
                 return rlt;
             }
-            console.log(dfs(matrix, 1, 0))
+            await dfs(matrix, 1, 0,0)
+            console.log('总共试探了', index,'次')
         }
         canvas.width = 920;
         canvas.height = 920;
@@ -195,12 +212,13 @@
 
         update();
         knowWay();
+        // update(true)
         document.querySelector('.rebuild').addEventListener('click', () => {
             update()
         });
         document.querySelector('.getAns').addEventListener('click', () => {
             knowWay();
-            update(true)
+            // update(true)
         });
     };
 </script>
