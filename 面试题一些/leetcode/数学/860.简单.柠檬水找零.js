@@ -26,7 +26,7 @@
  * @param {number[]} bills
  * @return {boolean}
  */
-var lemonadeChange = function(bills) {
+var lemonadeChange = function (bills) {
   let mapArr = [0, 0];
   for (let i = 0; i < bills.length; i += 1) {
     let bill = bills[i];
@@ -52,7 +52,7 @@ var lemonadeChange = function(bills) {
   }
   return true;
 };
-var lemonadeChange = function(bills) {
+var lemonadeChange = function (bills) {
   let hand = [];
   for (let i = 0; i < bills.length; i += 1) {
     let bill = bills[i];
@@ -60,7 +60,7 @@ var lemonadeChange = function(bills) {
       hand.push(bill);
     } else {
       // 降序排序
-      hand = hand.sort((a, b) => b - a );
+      hand = hand.sort((a, b) => b - a);
       let change = bill - 5;
       // 从前往后找，如果零钱小于等于需要找的钱，则需要找的钱减去零钱，删除当前的零钱
       // 如果不小于循环继续
@@ -69,7 +69,7 @@ var lemonadeChange = function(bills) {
           change -= hand[j];
           hand.splice(j, 1);
           // 删除元素，数组长度发生了变化
-          j --;
+          j--;
         }
         if (change === 0) {
           break;
@@ -85,3 +85,29 @@ var lemonadeChange = function(bills) {
   }
   return true;
 };
+var lemonadeChange = function (bills) {
+  let hand = [0, 0];
+  for (let i = 0; i < bills.length; i += 1) {
+    if (bills[i] == 5) {
+      hand[0] += 1;
+    } else if (bills[i] == 10) {
+      if (hand[0] == 0) return false;
+      hand[0] -= 1;
+      hand[1] += 1;
+    } else {  // 15 5 + 5 + 5 10 + 5
+      if (hand[1] == 0) {
+        if (hand[0] < 3)
+          return false
+        else
+          hand[0] -= 3
+      } else if (hand[0] >= 1) {
+        hand[1] -= 1;
+        hand[0] -= 1;
+      } else {
+        return false
+      }
+    }
+  }
+  return true
+};
+console.log(lemonadeChange([5, 5, 10, 10, 20]))
