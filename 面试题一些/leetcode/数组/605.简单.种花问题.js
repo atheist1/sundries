@@ -1,3 +1,11 @@
+/*
+ * @Descripttion: 
+ * @version: 
+ * @Author: qitianle
+ * @Date: 2019-11-09 10:51:55
+ * @LastEditors: qitianle
+ * @LastEditTime: 2020-08-17 10:33:48
+ */
 /**
  * 假设你有一个很长的花坛，一部分地块种植了花，另一部分却没有。可是，花卉不能种植在相邻的地块上，它们会争夺水源，两者都会死去。
 
@@ -27,3 +35,4 @@ var canPlaceFlowers = function (flowerbed, n) {
   }
   return n <= 0;
 };
+console.log(canPlaceFlowers([1,0,1,0,1,0,0,], 1))
