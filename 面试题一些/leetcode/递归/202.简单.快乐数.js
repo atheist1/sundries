@@ -1,3 +1,11 @@
+/*
+ * @Descripttion: 
+ * @version: 
+ * @Author: qitianle
+ * @Date: 2020-07-16 08:56:34
+ * @LastEditors: qitianle
+ * @LastEditTime: 2020-08-20 14:57:26
+ */
 /** 
  * 
  * 编写一个算法来判断一个数 n 是不是快乐数。
@@ -39,4 +47,22 @@ var isHappy = function(n) {
   }
   return _isHappy(n);
 };
-console.log(isHappy(20));
+var isHappy = function(n) {
+  let visited = {};
+  let getSum = function (n) {
+    let sum = 0;
+    `${n}`.split('').forEach(item => {
+      sum += Math.pow(item, 2)
+    })
+    return sum;
+  }
+  let _isHappy = function(n) {
+    if (n == 1) return true;
+    let rlt = getSum(n);
+    if (visited[rlt]) return false;
+    visited[rlt] = 1;
+    return _isHappy(rlt);
+  }
+  return _isHappy(n);
+};
+console.log(isHappy(29));
